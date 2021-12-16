@@ -2,20 +2,56 @@
 buildscript {
     ext {
         compose_version = '1.0.5'
+
+        // https://github.com/JLLeitschuh/ktlint-gradle/releases
+        ktlintPluginVersion = "10.2.0"
+
+        // https://github.com/detekt/detekt/releases
+        detektVersion = "1.17.0"
+
+        // https://developer.android.com/jetpack/androidx/releases/hilt
+        hiltVersion = "2.40.1"
+
+        kotlinVersion = "1.5.31"
+
+        // https://github.com/ben-manes/gradle-versions-plugin
+        versionsPluginVersion = "0.29.0"
+
+        // https://github.com/Kotlin/kotlinx-kover/releases
+        koverVersion = "0.4.1"
     }
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintPluginVersion"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+        classpath "com.github.ben-manes:gradle-versions-plugin:$versionsPluginVersion"
+//        classpath "org.jetbrains.kotlinx:kover:$koverVersion"
     }
+}
+
+apply from: "buildscripts/git-hooks.gradle"
+apply from: "buildscripts/versions.gradle"
+
+subprojects {
+    apply from: "../buildscripts/ktlint.gradle"
+    apply from: "../buildscripts/detekt.gradle"
+    apply from: "../buildscripts/versionsplugin.gradle"
+//    apply from: "../buildscripts/kover.gradle"
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+afterEvaluate {
+    tasks['clean'].dependsOn installGitHooks
 }
