@@ -23,10 +23,10 @@ fun PrimaryButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.primary,
+    backgroundColor: Color = MaterialTheme.colors.primary,
 ) {
     val buttonColors = buttonColors(
-        backgroundColor = color,
+        backgroundColor = backgroundColor,
     )
 
     Button(
