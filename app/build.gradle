@@ -47,7 +47,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
         useIR = true
 
         freeCompilerArgs += [
@@ -62,7 +62,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.5.10'
     }
 
     packagingOptions {

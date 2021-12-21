@@ -15,7 +15,7 @@ ext {
             // https://github.com/junit-team/junit4/releases
             junit                : "4.13.2",
             // https://github.com/mockk/mockk/releases
-            mockk                : "1.12.0",
+            mockk                : "1.12.1",
             // https://github.com/Kotlin/kotlinx.coroutines/releases
             coroutinesTest       : "1.5.2",
             // https://github.com/google/truth/releases
