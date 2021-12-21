@@ -9,5 +9,5 @@ package com.sawrose.toa.ui.login
  * */
 data class LoginViewState(
     val username: String,
-    val password:String,
+    val password: String,
 )

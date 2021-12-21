@@ -3,7 +3,6 @@ package com.sawrose.toa.ui.login
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -11,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.ui.Scaffold
 import com.sawrose.toa.ui.components.PrimaryButton
 import com.sawrose.toa.ui.components.SecondaryButton
-import com.sawrose.toa.ui.components.TOATextField
 import com.sawrose.toa.ui.theme.TOATheme
 
 /**
