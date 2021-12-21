@@ -1,6 +1,5 @@
 package com.sawrose.toa.ui.login
 
-
 /**
  * This defines the state of login Screen
  *
