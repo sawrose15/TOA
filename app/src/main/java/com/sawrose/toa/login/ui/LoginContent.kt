@@ -60,7 +60,7 @@ fun LoginContent(
             Spacer(modifier = Modifier.weight(1F))
 
             EmailInput(
-                text = viewState.userName,
+                text = viewState.email,
                 onTextChanged = onEmailChanged,
             )
 
