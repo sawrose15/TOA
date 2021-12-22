@@ -1,4 +1,4 @@
-package com.sawrose.toa.ui.theme
+package com.sawrose.toa.core.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

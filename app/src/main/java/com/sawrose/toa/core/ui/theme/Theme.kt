@@ -1,4 +1,4 @@
-package com.sawrose.toa.ui.theme
+package com.sawrose.toa.core.ui.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
