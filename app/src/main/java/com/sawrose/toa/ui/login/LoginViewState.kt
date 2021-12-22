@@ -6,6 +6,6 @@ package com.sawrose.toa.ui.login
  * @param[password] the current text entered in the password field
  * */
 data class LoginViewState(
-    val username: String,
+    val userName: String,
     val password: String,
 )

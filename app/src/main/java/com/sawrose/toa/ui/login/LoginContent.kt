@@ -39,105 +39,103 @@ private const val APP_LOGO_WIDTH_PERCENTAGE = 0.75F
  * this composable maintain the entire login screen for handling user login
  * 
  * @param[viewState] the current state of the screen to render.
+ * @param[onUsernameChanged] a callback invoked when the user enters their username
+ * @param[onPasswordChanged] a callback invoked when the user entered the password
+ * @param[onLoginClicked] a callback invoked when the user clicks the login button.
+ * @param[onSignUpClicked] a callback invoked when the user clicks the sign up button.
  */
 @Composable
 fun LoginContent(
     viewState: LoginViewState,
-    onEmailChanged: (String) -> Unit,
+    onUsernameChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onLoginClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
 ) {
-    Column(modifier = Modifier
-        .fillMaxSize()
+    
+    Surface(
+        color = MaterialTheme.colors.background,
     ) {
-        LogoInputColumn(
-            viewState,
-            onEmailChanged,
-            onPasswordChanged,
-            onLoginClicked,
-            onSignUpClicked,
-        )
-
-    }
-}
-
-@Composable
-private fun LogoInputColumn(
-    viewState: LoginViewState,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
-    onLoginClicked: () -> Unit,
-    onSignUpClicked: () -> Unit,
-    contentPadding: PaddingValues = PaddingValues(
-        dimensionResource(id = R.dimen.screen_padding)
-    ),
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                start = contentPadding.calculateStartPadding(LocalLayoutDirection.current),
-                end = contentPadding.calculateEndPadding(LocalLayoutDirection.current),
-            )
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        VerticalSpacer(height = contentPadding.calculateTopPadding())
-
-        AppLogo(
+        Column(
             modifier = Modifier
-                .padding(vertical = 88.dp),
-        )
+                .fillMaxSize()
+                .padding(dimensionResource(id = R.dimen.screen_padding)),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.weight(1F))
 
-        EmailInput(
-            text = "viewState.credentials.email.value",
-            onTextChanged = onEmailChanged,
-            errorMessage = "(viewState as? LoginViewState.Active)",
-//                ?.emailInputErrorMessage
-//                ?.getString()",
-            enabled = true
-//            "viewState.inputsEnabled",
-        )
+            AppLogo()
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.weight(1F))
 
-        TOATextField(
-            text = viewState.password,
-            onTextChanged = {},
-            labelText = "Password"
-        )
+            UsernameInput(
+                text = viewState.userName,
+                onTextChanged = onUsernameChanged,
+            )
 
-        Spacer(modifier = Modifier.height(12.dp))
+            VerticalSpacer(height = 12.dp)
 
-        PrimaryButton(
-            text = "Log in",
-            onClick = { /*TODO*/ },
-            backgroundColor = MaterialTheme.colors.secondary
-        )
+            PasswordInput(
+                text = viewState.password,
+                onTextChanged = onPasswordChanged,
+            )
 
-        Spacer(modifier = Modifier.height(12.dp))
+            VerticalSpacer(height = 48.dp)
 
-        SecondaryButton(
-            text = "Sign Up",
-            onClick = { /*TODO*/ },
-        )
+            LoginButton(
+                onClick = onLoginClicked
+            )
+
+            VerticalSpacer(height = 12.dp)
+
+            SignUpButton(
+                onClick = onSignUpClicked
+            )
+        }
     }
 }
 
 @Composable
-private fun EmailInput(
+private fun SignUpButton(
+    onClick : () -> Unit
+) {
+    SecondaryButton(
+        text = stringResource(R.string.sign_up),
+        onClick = onClick,
+    )
+}
+
+@Composable
+private fun LoginButton(
+    onClick: () -> Unit
+) {
+    PrimaryButton(
+        text = stringResource(R.string.log_in),
+        onClick = onClick,
+    )
+}
+
+@Composable
+private fun PasswordInput(
     text: String,
-    onTextChanged: (String) -> Unit,
-    errorMessage: String?,
-    enabled: Boolean,
+    onTextChanged: (String) -> Unit
 ) {
     TOATextField(
         text = text,
         onTextChanged = onTextChanged,
-        labelText = stringResource(R.string.email),
-        errorMessage = errorMessage,
-        enabled = enabled
+        labelText = stringResource(R.string.password),
+    )
+}
+
+@Composable
+private fun UsernameInput(
+    text: String,
+    onTextChanged: (String) -> Unit
+) {
+    TOATextField(
+        text = text,
+        onTextChanged = onTextChanged,
+        labelText = stringResource(R.string.username),
     )
 }
 
@@ -147,7 +145,7 @@ private fun AppLogo(
 ) {
     Image(
         painterResource(id = R.drawable.ic_toa_checkmark),
-        contentDescription = "App Logo",
+        contentDescription = stringResource(R.string.app_logo_container),
         modifier = modifier
             .fillMaxWidth(APP_LOGO_WIDTH_PERCENTAGE)
     )
@@ -164,16 +162,16 @@ private fun AppLogo(
 @Composable
 fun LoginScreenPreview() {
     val viewState = LoginViewState(
-        username = "",
+        userName = "",
         password = "",
     )
     TOATheme {
         LoginContent(
             viewState = viewState,
-            onEmailChanged = {},
+            onUsernameChanged = {},
             onPasswordChanged = {},
             onLoginClicked = {},
-            onSignUpClicked = {},
+            onSignUpClicked = {}
         )
     }
 }
