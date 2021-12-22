@@ -30,19 +30,18 @@ fun TOATextField(
     labelText: String,
     modifier: Modifier = Modifier,
 ) {
-
     OutlinedTextField(
         value = text,
         onValueChange = onTextChanged,
         label = {
             Text(
-                text = labelText
+                text = labelText,
             )
         },
         shape = TextFieldShape,
         modifier = modifier
             .heightIn(dimensionResource(id = R.dimen.text_field_height))
-            .fillMaxWidth()
+            .fillMaxWidth(),
     )
 }
 
