@@ -1,4 +1,4 @@
-package com.sawrose.toa.ui.components
+package com.sawrose.toa.core.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.sawrose.toa.R
-import com.sawrose.toa.ui.theme.TOATheme
-import com.sawrose.toa.ui.theme.TextFieldShape
+import com.sawrose.toa.core.ui.theme.TOATheme
+import com.sawrose.toa.core.ui.theme.TextFieldShape
 
 /**
  * This is a custom implementation of an [OutlinedTextField] to ensure that it has the TOA branding

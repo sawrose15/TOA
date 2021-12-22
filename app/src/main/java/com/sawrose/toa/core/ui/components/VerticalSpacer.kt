@@ -1,4 +1,4 @@
-package com.sawrose.toa.ui.components
+package com.sawrose.toa.core.ui.components
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
