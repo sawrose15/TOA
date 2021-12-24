@@ -21,7 +21,7 @@ class ProdCredentialsLoginUseCase(
                 return LoginResult.Success
             }
             is Result.Error -> {
-                LoginResultForFailure(repoResult)
+                loginResultForFailure(repoResult)
             }
         }
     }
@@ -30,7 +30,7 @@ class ProdCredentialsLoginUseCase(
      * Checks the possible error fo the [repoResult] and map it into the appropriate
      * [LoginResult.Failure]
      */
-    private fun LoginResultForFailure(repoResult: Result.Error) =
+    private fun loginResultForFailure(repoResult: Result.Error) =
         when (repoResult.error) {
             is InvalidCredentialsException -> {
                 LoginResult.Failure.InvalidCredentials
