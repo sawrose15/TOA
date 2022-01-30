@@ -1,5 +1,4 @@
 package com.sawrose.toa.login.repository
-
 /**
  * This repository is responsible for storing and fetching auth Token
  */

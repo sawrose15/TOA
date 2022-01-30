@@ -33,11 +33,10 @@ class ProdCredentialsLoginUseCaseTest {
     private lateinit var tokenRepository: FakeTokenRepository
 
     @Before
-    fun setUp(){
-      loginRepository = FakeLoginRepository()
-      tokenRepository = FakeTokenRepository()
+    fun setUp() {
+        loginRepository = FakeLoginRepository()
+        tokenRepository = FakeTokenRepository()
     }
-
 
     @Test
     fun testSuccessfulLogin() = runBlockingTest {

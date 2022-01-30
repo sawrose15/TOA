@@ -7,17 +7,17 @@ import io.mockk.mockk
 
 class FakeTokenRepository {
 
-    val mock : TokenRepository = mockk(
+    val mock: TokenRepository = mockk(
         relaxUnitFun = true,
     )
 
-    fun verifyTokenStored(token: Token){
+    fun verifyTokenStored(token: Token) {
         coVerify {
             mock.storeToken(token)
         }
     }
 
-    fun verifyNoTokenStored(){
+    fun verifyNoTokenStored() {
         coVerify(exactly = 0) {
             mock.storeToken(any())
         }
