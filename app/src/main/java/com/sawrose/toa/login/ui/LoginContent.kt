@@ -28,7 +28,6 @@ private const val APP_LOGO_WIDTH_PERCENTAGE = 0.75F
 
 /**
  * this composable maintain the entire login screen for handling user login
- * 
  * @param[viewState] the current state of the screen to render.
  * @param[onEmailChanged] a callback invoked when the user enters their email
  * @param[onPasswordChanged] a callback invoked when the user entered the password
@@ -43,7 +42,6 @@ fun LoginContent(
     onLoginClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
 ) {
-    
     Surface(
         color = MaterialTheme.colors.background,
     ) {
@@ -88,7 +86,7 @@ fun LoginContent(
 
 @Composable
 private fun SignUpButton(
-    onClick : () -> Unit
+    onClick: () -> Unit
 ) {
     SecondaryButton(
         text = stringResource(R.string.sign_up),
