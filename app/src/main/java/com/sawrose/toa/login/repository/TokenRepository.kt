@@ -1,7 +1,6 @@
 package com.sawrose.toa.login.repository
 
 import com.sawrose.toa.login.domain.model.Token
-
 /**
  * This repository is responsible for fetching and storing a user's authentication token.
  */
