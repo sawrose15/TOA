@@ -5,19 +5,22 @@ import com.sawrose.toa.login.domain.model.Credentials
 import com.sawrose.toa.login.domain.model.InvalidCredentialsException
 import com.sawrose.toa.login.domain.model.LoginResult
 import com.sawrose.toa.login.repository.LoginRepository
+import com.sawrose.toa.login.repository.TokenRepository
 
 /**
  * A concrete implementation of a [CredentialsLoginUseCase] that will request logging in
  * via the [loginRepository].
  */
 class ProdCredentialsLoginUseCase(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val tokenRepository: TokenRepository,
 ) : CredentialsLoginUseCase {
     override suspend fun invoke(credentials: Credentials): LoginResult {
         val repoResult = loginRepository.loginWithCredentials(credentials)
 
         return when (repoResult) {
             is Result.Success -> {
+                tokenRepository.storeToken(repoResult.data.token)
                 return LoginResult.Success
             }
             is Result.Error -> {
