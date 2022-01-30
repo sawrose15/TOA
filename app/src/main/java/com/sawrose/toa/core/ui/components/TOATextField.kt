@@ -28,6 +28,8 @@ import com.sawrose.toa.core.ui.theme.TextFieldShape
  * @param[onTextChanged] A callback invoked whenever the user modifies the text inside this input.
  * @param[labelText] The label that shows above the input when focused.
  * @param[modifier] An optional [Modifier] to configure this component.
+ * @param[errorMessage] An optional [errorMessage] to show the error message.
+ * @param[visualTransformation] An optional [visualTransformation] to hide the password with symbols.
  */
 @Composable
 fun TOATextField(
