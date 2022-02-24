@@ -35,9 +35,11 @@ class LoginViewModel(
     }
 
     fun loginButtonClicked() {
+        TODO()
     }
 
     fun signupButtonClicked() {
+        TODO()
     }
 }
 
