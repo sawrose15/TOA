@@ -24,7 +24,7 @@ fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colors.primary,
-    enabled : Boolean = true
+    enabled: Boolean = true
 ) {
     val buttonColors = buttonColors(
         backgroundColor = backgroundColor,

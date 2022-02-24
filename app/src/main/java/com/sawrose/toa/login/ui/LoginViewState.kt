@@ -12,7 +12,7 @@ import com.sawrose.toa.login.domain.model.Credentials
 sealed class LoginViewState(
     open val credentials: Credentials,
     open val buttonEnabled: Boolean = true,
-){
+) {
     /**
      * Initial state of the login screen when nothing input.
      */
@@ -25,7 +25,7 @@ sealed class LoginViewState(
      */
     data class Active(
         override val credentials: Credentials,
-    ): LoginViewState(
+    ) : LoginViewState(
         credentials = credentials
     )
 
@@ -34,7 +34,7 @@ sealed class LoginViewState(
      */
     data class Submitting(
         override val credentials: Credentials
-    ): LoginViewState(
+    ) : LoginViewState(
         credentials = credentials,
         buttonEnabled = false
     )
@@ -45,7 +45,7 @@ sealed class LoginViewState(
     data class SubmissionError(
         override val credentials: Credentials,
         val errorMessage: String,
-    ): LoginViewState(
+    ) : LoginViewState(
         credentials = credentials,
     )
 
@@ -56,9 +56,7 @@ sealed class LoginViewState(
         override val credentials: Credentials,
         val emailInputErrorMessage: String?,
         val passwordInputErrorMessage: String?,
-    ): LoginViewState(
+    ) : LoginViewState(
         credentials = credentials
     )
-
-
 }

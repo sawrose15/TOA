@@ -5,11 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -111,7 +109,7 @@ private fun LoginInputColumn(
             errorMessage = (viewState as? LoginViewState.InputError)?.passwordInputErrorMessage
         )
 
-        if(viewState is LoginViewState.SubmissionError){
+        if (viewState is LoginViewState.SubmissionError) {
             Text(
                 text = viewState.errorMessage,
                 color = MaterialTheme.colors.error,
@@ -226,7 +224,7 @@ fun LoginScreenPreview(
     }
 }
 
-class LoginViewStateProvider: PreviewParameterProvider<LoginViewState>{
+class LoginViewStateProvider : PreviewParameterProvider<LoginViewState> {
     override val values: Sequence<LoginViewState>
         get() {
             val activeCredentials = Credentials(
@@ -249,5 +247,4 @@ class LoginViewStateProvider: PreviewParameterProvider<LoginViewState>{
                 ),
             )
         }
-
 }

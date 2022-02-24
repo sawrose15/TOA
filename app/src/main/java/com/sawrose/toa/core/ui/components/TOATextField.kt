@@ -12,7 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,7 +56,7 @@ fun TOATextField(
             visualTransformation = visualTransformation,
         )
 
-        if (errorMessage !=null){
+        if (errorMessage != null) {
             Text(
                 text = errorMessage,
                 color = MaterialTheme.colors.error,
