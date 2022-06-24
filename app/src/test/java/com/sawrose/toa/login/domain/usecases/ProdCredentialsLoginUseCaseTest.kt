@@ -13,6 +13,7 @@ import com.sawrose.toa.login.domain.model.LoginResult
 import com.sawrose.toa.login.domain.model.Password
 import com.sawrose.toa.login.domain.model.RefreshToken
 import com.sawrose.toa.login.domain.model.Token
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
@@ -63,7 +64,7 @@ class ProdCredentialsLoginUseCaseTest {
     }
 
     @Test
-    fun testUnknownFailureLogin() = runBlockingTest {
+    fun testUnknownFailureLogin() = runBlocking {
         val loginResponse = Result.Error(
             Throwable("Error Detected")
         )
@@ -84,7 +85,7 @@ class ProdCredentialsLoginUseCaseTest {
     }
 
     @Test
-    fun testInvalidCredentialLogin() = runBlockingTest {
+    fun testInvalidCredentialLogin() = runBlocking {
         val loginResponse = Result.Error(
             InvalidCredentialsException()
         )

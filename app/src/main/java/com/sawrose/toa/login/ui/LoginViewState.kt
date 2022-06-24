@@ -1,17 +1,18 @@
 package com.sawrose.toa.login.ui
 
+import com.sawrose.toa.core.ui.UIText
 import com.sawrose.toa.login.domain.model.Credentials
 
 /**
  * A sealed class defining all possible states of our login Screen
  *
  * @property[Credentials] the current credential entered by user
- * @param[buttonEnabled] If true, the buttons on the login screen can accept clicks,
+ * @param[inputEnabled] If true, the buttons on the login screen can accept clicks,
  * false otherwise.
  * */
 sealed class LoginViewState(
     open val credentials: Credentials,
-    open val buttonEnabled: Boolean = true,
+    open val inputEnabled: Boolean = true,
 ) {
     /**
      * Initial state of the login screen when nothing input.
@@ -25,6 +26,8 @@ sealed class LoginViewState(
      */
     data class Active(
         override val credentials: Credentials,
+        val emailInputErrorMessage: UIText? = null,
+        val passwordInputErrorMessage: UIText? = null,
     ) : LoginViewState(
         credentials = credentials
     )
@@ -36,7 +39,7 @@ sealed class LoginViewState(
         override val credentials: Credentials
     ) : LoginViewState(
         credentials = credentials,
-        buttonEnabled = false
+        inputEnabled = false
     )
 
     /**
@@ -44,19 +47,13 @@ sealed class LoginViewState(
      */
     data class SubmissionError(
         override val credentials: Credentials,
-        val errorMessage: String,
+        val errorMessage: UIText,
     ) : LoginViewState(
         credentials = credentials,
     )
 
-    /**
-     * The state of the screen when the user tries to submit with invalid inputs.
-     */
-    data class InputError(
-        override val credentials: Credentials,
-        val emailInputErrorMessage: String?,
-        val passwordInputErrorMessage: String?,
-    ) : LoginViewState(
-        credentials = credentials
+    object Completed : LoginViewState(
+        credentials = Credentials(),
+        inputEnabled = false,
     )
 }
