@@ -1,13 +1,12 @@
 package com.sawrose.toa.tasklist.ui
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import com.sawrose.toa.R
 import com.sawrose.toa.core.ui.theme.TOATheme
 import com.sawrose.toa.model.Task
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskList(
     incompleteTasks: List<Task>,
@@ -58,11 +56,11 @@ fun TaskList(
                             },
                             modifier = Modifier
                                 .testTag("Incomplete Task ${task.id}")
-                                .animateItemPlacement(),
+                                .animateItem(),
                         )
 
                         if (index != incompleteTasks.lastIndex) {
-                            Divider(
+                            HorizontalDivider(
                                 color = MaterialTheme.colorScheme.surface,
                             )
                         }
@@ -94,11 +92,11 @@ fun TaskList(
                             onDoneClicked = { onDoneClicked(task) },
                             modifier = Modifier
                                 .testTag("Completed Task ${task.id}")
-                                .animateItemPlacement(),
+                                .animateItem(),
                         )
 
                         if (index != completedTasks.lastIndex) {
-                            Divider(
+                            HorizontalDivider(
                                 color = MaterialTheme.colorScheme.surface,
                             )
                         }

@@ -49,10 +49,10 @@ fun TOANavigationContainer(
                 )
             }
             NavigationType.PERMANENT_NAVIGATION_DRAWER -> {
-                // TOANavigationDrawerContent(
-                //     navigationConfig,
-                //     modifier,
-                // )
+                TOANavigationDrawerContent(
+                    navigationConfig,
+                    modifier,
+                )
             }
         }
     }

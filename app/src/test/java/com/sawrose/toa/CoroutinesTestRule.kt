@@ -1,7 +1,9 @@
 package com.sawrose.toa
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
@@ -15,21 +17,19 @@ import org.junit.runner.Description
  * In our unit tests, we don't have an Android main thread, so we make a call to [Dispatchers.setMain]
  * here.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class CoroutinesTestRule(
-    private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher(),
+    private val testDispatcher: TestDispatcher = UnconfinedTestDispatcher(),
 ) : TestWatcher() {
     override fun starting(
         description: Description,
     ) {
-        super.starting(description)
         Dispatchers.setMain(testDispatcher)
     }
 
     override fun finished(
         description: Description,
     ) {
-        super.finished(description)
         Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 }

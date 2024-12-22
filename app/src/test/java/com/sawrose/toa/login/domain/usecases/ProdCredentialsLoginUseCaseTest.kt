@@ -106,4 +106,27 @@ class ProdCredentialsLoginUseCaseTest {
             assertThat(result).isEqualTo(LoginResult.Failure.InvalidCredentials)
             tokenRepository.verifyNoTokenStored()
         }
+
+    @Test
+    fun testEmptyCredentialLogin() {
+        runTest {
+            val emptyCredentials = Credentials()
+
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
+
+            val result = useCase.login(emptyCredentials)
+            assertThat(result).isEqualTo(
+                LoginResult.Failure.EmptyCredentials(
+                    emptyEmail = true,
+                    emptyPassword = true,
+                ),
+            )
+
+            loginRepository.verifyNoLoginCall()
+            tokenRepository.verifyNoTokenStored()
+        }
+    }
 }

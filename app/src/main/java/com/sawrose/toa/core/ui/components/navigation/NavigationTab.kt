@@ -12,13 +12,13 @@ sealed class NavigationTab(
     val icon: ImageVector,
     val screenRoute: String,
 ) {
-    object Home : NavigationTab(
+    data object Home : NavigationTab(
         labelTextRes = R.string.home,
         icon = Icons.Default.Home,
         screenRoute = TaskListScreenDestination.route,
     )
 
-    object Settings : NavigationTab(
+    data object Settings : NavigationTab(
         labelTextRes = R.string.settings,
         icon = Icons.Default.Settings,
         screenRoute = TaskListScreenDestination.route,

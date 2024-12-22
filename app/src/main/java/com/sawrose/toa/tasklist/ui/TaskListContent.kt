@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +45,8 @@ import com.sawrose.toa.core.utils.toLocalDateUTC
 import com.sawrose.toa.model.Task
 import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class)
+const val ADD_TASK_BUTTON_TAG = "ADD_TASK_BUTTON"
+
 @Composable
 fun TaskListContent(
     viewState: TaskListViewState,
@@ -179,6 +181,7 @@ private fun RescheduleTaskDialog(
             datePickerState = rememberDatePickerState(
                 initialSelectedDateMillis = taskToReschedule.scheduleTimeInMillis.toLocalDateUTC()
                     .toEpochMillisUTC(),
+                selectableDates = TOADatePickerDialog.FutureDates,
             ),
             onDismiss = onDismissed,
             onComplete = { selectedDateMillis ->
@@ -228,7 +231,11 @@ fun ToolbarAndDialog(
 fun AddTaskButton(
     onclick: () -> Unit,
 ) {
-    FloatingActionButton(onClick = onclick) {
+    FloatingActionButton(
+        onClick = onclick,
+        modifier = Modifier
+            .testTag(ADD_TASK_BUTTON_TAG),
+    ) {
         Icon(
             Icons.Default.Add,
             contentDescription = stringResource(id = R.string.add_Task),
@@ -238,7 +245,10 @@ fun AddTaskButton(
 
 @Composable
 private fun TaskListEmptyState() {
-    Box {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
         Text(
             text = stringResource(R.string.no_task_scheduled),
             textAlign = TextAlign.Center,

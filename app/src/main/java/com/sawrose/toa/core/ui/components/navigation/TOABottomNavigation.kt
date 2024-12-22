@@ -1,7 +1,6 @@
 package com.sawrose.toa.core.ui.components.navigation
 
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -27,11 +26,6 @@ fun TOABottomNavigation(
                     Icon(
                         imageVector = tab.icon,
                         contentDescription = null,
-                        tint = if (tab == navigationConfig.selectedTab) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSurface
-                        },
                     )
                 },
                 label = {
