@@ -14,7 +14,7 @@ import androidx.core.os.BuildCompat
 fun TOATheme(
     isDark: Boolean = isSystemInDarkTheme(),
     dynamic: Boolean = BuildCompat.isAtLeastS(),
-    content: @Composable() () -> Unit
+    content: @Composable() () -> Unit,
 ) {
     val colors = when {
         dynamic && isDark -> dynamicDarkColorScheme(LocalContext.current)
@@ -26,6 +26,6 @@ fun TOATheme(
     MaterialTheme(
         colorScheme = colors,
         typography = AppTypography,
-        content = content
+        content = content,
     )
 }

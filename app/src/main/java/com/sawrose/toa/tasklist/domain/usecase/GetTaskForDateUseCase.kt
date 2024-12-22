@@ -11,5 +11,7 @@ interface GetTaskForDateUseCase {
     /**
      * Fetch all tasks the user has created for given [date].
      * */
-    fun invoke(date: LocalDate): Flow<Result<List<Task>>>
+    fun invoke(
+        date: LocalDate,
+    ): Flow<Result<List<Task>>>
 }

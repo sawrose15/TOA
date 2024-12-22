@@ -33,11 +33,10 @@ fun SecondaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentColor: Color = MaterialTheme.colorScheme.primary,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
-
     val buttonColors = textButtonColors(
-        contentColor = contentColor
+        contentColor = contentColor,
     )
     TextButton(
         onClick = onClick,
@@ -46,10 +45,10 @@ fun SecondaryButton(
             .height(dimensionResource(id = R.dimen.button_height))
             .fillMaxWidth(),
         colors = buttonColors,
-        enabled = enabled
+        enabled = enabled,
     ) {
         Text(
-            text = text.toUpperCase(Locale.current)
+            text = text.toUpperCase(Locale.current),
         )
     }
 }
@@ -91,7 +90,7 @@ fun DisableSecondaryButtonPreview() {
             SecondaryButton(
                 text = "Secondary button",
                 onClick = {},
-                enabled = false
+                enabled = false,
             )
         }
     }

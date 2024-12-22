@@ -12,18 +12,19 @@ import javax.inject.Inject
  * us to quickly modify return values for manual testing sake.
  */
 
-class DemoLoginRepository @Inject constructor(): LoginRepository {
-    override suspend fun login(credentials: Credentials): Result<LoginResponse> {
+class DemoLoginRepository @Inject constructor() : LoginRepository {
+    override suspend fun login(
+        credentials: Credentials,
+    ): Result<LoginResponse> {
         val defaultToken = Token(
             AuthToken("DemoAuthToken"),
-            RefreshToken("DemoRefreshToken")
+            RefreshToken("DemoRefreshToken"),
         )
 
         val defaultResponse = LoginResponse(
-            defaultToken
+            defaultToken,
         )
 
         return Result.success(defaultResponse)
-
     }
 }

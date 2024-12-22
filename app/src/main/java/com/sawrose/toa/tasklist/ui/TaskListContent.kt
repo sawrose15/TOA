@@ -57,7 +57,7 @@ fun TaskListContent(
     onAlertMessageShown: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val snackBarHostState = remember{
+    val snackBarHostState = remember {
         SnackbarHostState()
     }
 
@@ -82,18 +82,18 @@ fun TaskListContent(
                 hostState = snackBarHostState,
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { paddingValues ->
-        if(viewState.showTask){
-            if(viewState.incompleteTasks.isNullOrEmpty() &&
-                viewState.completedTask.isNullOrEmpty()){
+        if (viewState.showTask) {
+            if (viewState.incompleteTasks.isNullOrEmpty() &&
+                viewState.completedTask.isNullOrEmpty()
+            ) {
                 TaskListEmptyState()
-            }else {
-                
+            } else {
                 RescheduleTaskDialog(
                     viewState = viewState,
                     onTaskRescheduled = onTaskRescheduled,
-                    onDismissed = onReschedulingCompleted
+                    onDismissed = onReschedulingCompleted,
                 )
 
                 TaskList(
@@ -108,7 +108,7 @@ fun TaskListContent(
             }
         }
 
-        if(viewState.showLoading){
+        if (viewState.showLoading) {
             TaskListLoadingContent()
         }
     }
@@ -212,7 +212,7 @@ fun ToolbarAndDialog(
                 if (selectedDateMillis != null) {
                     onDateSelected.invoke(selectedDateMillis.toLocalDateUTC())
                 }
-            }
+            },
         )
     }
 
@@ -238,7 +238,7 @@ fun AddTaskButton(
 
 @Composable
 private fun TaskListEmptyState() {
-    Box{
+    Box {
         Text(
             text = stringResource(R.string.no_task_scheduled),
             textAlign = TextAlign.Center,
@@ -246,16 +246,13 @@ private fun TaskListEmptyState() {
             modifier = Modifier
                 .padding(32.dp)
                 .align(Alignment.Center)
-                .adaptiveWidth()
+                .adaptiveWidth(),
         )
     }
-
 }
-
 
 @Suppress("MagicNumber")
 class TaskListViewStateProvider : PreviewParameterProvider<TaskListViewState> {
-
     override val values: Sequence<TaskListViewState>
         get() {
             val incompleteTasks = (1..3).map { index ->
@@ -325,5 +322,4 @@ fun TaskListContentPreview(
             onAlertMessageShown = {},
         )
     }
-
 }

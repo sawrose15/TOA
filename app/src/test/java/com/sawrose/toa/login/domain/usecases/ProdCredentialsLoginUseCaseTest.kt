@@ -20,7 +20,6 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class ProdCredentialsLoginUseCaseTest {
-
     private val defaultCredentials = Credentials(
         email = Email("test@test.com"),
         password = Password("test123"),
@@ -28,7 +27,7 @@ class ProdCredentialsLoginUseCaseTest {
 
     private val defaultToken = Token(
         authToken = AuthToken("Auth"),
-        refreshToken = RefreshToken("Refresh")
+        refreshToken = RefreshToken("Refresh"),
     )
 
     private lateinit var loginRepository: FakeLoginRepository
@@ -41,68 +40,70 @@ class ProdCredentialsLoginUseCaseTest {
     }
 
     @Test
-    fun testSuccessfulLogin() = runTest {
-
-        val loginResponse = Result.success(
-            LoginResponse(
-                token = defaultToken
+    fun testSuccessfulLogin() =
+        runTest {
+            val loginResponse = Result.success(
+                LoginResponse(
+                    token = defaultToken,
+                ),
             )
-        )
 
-        loginRepository.mockLoginWithCredentials(
-            defaultCredentials,
-            loginResponse
-        )
+            loginRepository.mockLoginWithCredentials(
+                defaultCredentials,
+                loginResponse,
+            )
 
-        val useCase = ProdCredentialsLoginUseCase(
-            loginRepository = loginRepository.mock,
-            tokenRepository = tokenRepository.mock
-        )
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
 
-        val result = useCase.login(defaultCredentials)
-        assertThat(result).isEqualTo(LoginResult.Success)
-        tokenRepository.verifyTokenStored(defaultToken)
-    }
-
-    @Test
-    fun testUnknownFailureLogin() = runBlocking {
-        val loginResponse: Result<LoginResponse> = Result.failure(
-            Throwable("Error Detected")
-        )
-
-        loginRepository.mockLoginWithCredentials(
-            defaultCredentials,
-            loginResponse
-        )
-
-        val useCase = ProdCredentialsLoginUseCase(
-            loginRepository = loginRepository.mock,
-            tokenRepository = tokenRepository.mock,
-        )
-
-        val result = useCase.login(defaultCredentials)
-        assertThat(result).isEqualTo(LoginResult.Failure.Unknown)
-        tokenRepository.verifyNoTokenStored()
-    }
+            val result = useCase.login(defaultCredentials)
+            assertThat(result).isEqualTo(LoginResult.Success)
+            tokenRepository.verifyTokenStored(defaultToken)
+        }
 
     @Test
-    fun testInvalidCredentialLogin() = runBlocking {
-        val loginResponse: Result<LoginResponse> = Result.failure(
-            InvalidCredentialsException()
-        )
+    fun testUnknownFailureLogin() =
+        runBlocking {
+            val loginResponse: Result<LoginResponse> = Result.failure(
+                Throwable("Error Detected"),
+            )
 
-        loginRepository.mockLoginWithCredentials(
-            defaultCredentials,
-            loginResponse
-        )
+            loginRepository.mockLoginWithCredentials(
+                defaultCredentials,
+                loginResponse,
+            )
 
-        val useCase = ProdCredentialsLoginUseCase(
-            loginRepository = loginRepository.mock,
-            tokenRepository = tokenRepository.mock
-        )
-        val result = useCase.login(defaultCredentials)
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
 
-        assertThat(result).isEqualTo(LoginResult.Failure.InvalidCredentials)
-        tokenRepository.verifyNoTokenStored()
-    }
+            val result = useCase.login(defaultCredentials)
+            assertThat(result).isEqualTo(LoginResult.Failure.Unknown)
+            tokenRepository.verifyNoTokenStored()
+        }
+
+    @Test
+    fun testInvalidCredentialLogin() =
+        runBlocking {
+            val loginResponse: Result<LoginResponse> = Result.failure(
+                InvalidCredentialsException(),
+            )
+
+            loginRepository.mockLoginWithCredentials(
+                defaultCredentials,
+                loginResponse,
+            )
+
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
+            val result = useCase.login(defaultCredentials)
+
+            assertThat(result).isEqualTo(LoginResult.Failure.InvalidCredentials)
+            tokenRepository.verifyNoTokenStored()
+        }
 }

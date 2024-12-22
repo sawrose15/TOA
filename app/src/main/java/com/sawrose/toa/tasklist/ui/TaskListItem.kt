@@ -27,11 +27,13 @@ fun TaskListItem(
     onDoneClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .padding(16.dp)) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+    ) {
         TaskText(
-            task.description
+            task.description,
         )
 
         if (!task.completed) {
@@ -91,9 +93,7 @@ private fun TaskText(
     )
 }
 
-
 private class TaskPreviewParameterProvider : PreviewParameterProvider<Task> {
-
     override val values: Sequence<Task>
         get() {
             val incompleteTask = Task(

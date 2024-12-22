@@ -18,11 +18,12 @@ class LoginViewModelRobot {
     )
     private lateinit var viewModel: LoginViewModel
 
-    fun buildViewModel() = apply {
-        viewModel = LoginViewModel(
-            credentialsLoginUseCase = credentialLoginUseCase,
-        )
-    }
+    fun buildViewModel() =
+        apply {
+            viewModel = LoginViewModel(
+                credentialsLoginUseCase = credentialLoginUseCase,
+            )
+        }
 
     suspend fun mockLoginResultForCredentials(
         credentials: Credentials,
@@ -31,21 +32,27 @@ class LoginViewModelRobot {
         fakeLoginRepository.mockLoginWithCredentials(credentials = credentials, result = result)
     }
 
-    fun enterEmail(email: String) = apply {
+    fun enterEmail(
+        email: String,
+    ) = apply {
         viewModel.emailChanged(email)
     }
 
-    fun enterPassword(password: String) = apply {
+    fun enterPassword(
+        password: String,
+    ) = apply {
         viewModel.passwordChanged(password)
     }
 
-    fun clickLoginButton() = apply {
-        viewModel.loginButtonClicked()
-    }
+    fun clickLoginButton() =
+        apply {
+            viewModel.loginButtonClicked()
+        }
 
-    fun clickSignUpButton() = apply {
-        viewModel.signupButtonClicked()
-    }
+    fun clickSignUpButton() =
+        apply {
+            viewModel.signupButtonClicked()
+        }
 
     /**
      * Launch a coroutine that will observe our [viewModel]'s view state and ensure that we consume
@@ -61,7 +68,7 @@ class LoginViewModelRobot {
         viewModel.viewState.test {
             action()
 
-            for(state in viewStates){
+            for (state in viewStates) {
                 assertThat(awaitItem()).isEqualTo(state)
             }
 

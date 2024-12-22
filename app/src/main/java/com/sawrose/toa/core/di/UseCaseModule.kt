@@ -24,21 +24,21 @@ import dagger.hilt.components.SingletonComponent
 abstract class UseCaseModule {
     @Binds
     abstract fun bindGetAllTasks(
-        getAllTasksUseCase: ProdGetAllTasksUseCase
+        getAllTasksUseCase: ProdGetAllTasksUseCase,
     ): GetAllTasksUseCase
 
     @Binds
     abstract fun bindGetTaskForDate(
-        getTaskForDateUseCase: ProdGetTaskForDateUseCase
+        getTaskForDateUseCase: ProdGetTaskForDateUseCase,
     ): GetTaskForDateUseCase
 
     @Binds
     abstract fun bindAddTaskUseCase(
-        addTaskUseCase: ProdAddTaskUseCase
+        addTaskUseCase: ProdAddTaskUseCase,
     ): AddTaskUseCase
 
     @Binds
     abstract fun bindRescheduleTaskUseCase(
-        rescheduleTaskUseCase: ProdRescheduleTaskUseCase
+        rescheduleTaskUseCase: ProdRescheduleTaskUseCase,
     ): RescheduleTaskUseCase
 }

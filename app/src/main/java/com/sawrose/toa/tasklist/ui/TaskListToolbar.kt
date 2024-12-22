@@ -24,21 +24,22 @@ fun TaskListToolbar(
     onCalendarIconClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    CenterAlignedTopAppBar(title = {
-        Text(text = title)
-    },
+    CenterAlignedTopAppBar(
+        title = {
+            Text(text = title)
+        },
         actions = {
             IconButton(onClick = onCalendarIconClicked) {
                 Icon(
                     imageVector = Icons.Default.DateRange,
-                    contentDescription = stringResource(id = R.string.change_date)
+                    contentDescription = stringResource(id = R.string.change_date),
                 )
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
         ),
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -53,6 +54,6 @@ fun TaskListToolbar(
 @Composable
 private fun TaskListToolbarPreview() {
     TOATheme {
-        TaskListToolbar(title = "Today", onCalendarIconClicked = {  })
+        TaskListToolbar(title = "Today", onCalendarIconClicked = { })
     }
 }

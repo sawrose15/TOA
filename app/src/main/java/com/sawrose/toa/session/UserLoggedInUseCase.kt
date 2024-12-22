@@ -9,9 +9,9 @@ import javax.inject.Inject
  * A use case that determines if the user is logged in.
  * */
 class UserLoggedInUseCase @Inject constructor(
-    private val tokenRepository: TokenRepository
+    private val tokenRepository: TokenRepository,
 ) {
-    fun isUserLoggedIn(): Flow<Boolean>{
+    fun isUserLoggedIn(): Flow<Boolean> {
         return tokenRepository
             .observeToken()
             .map { token ->

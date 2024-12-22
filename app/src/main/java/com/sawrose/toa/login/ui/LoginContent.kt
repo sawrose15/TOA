@@ -62,21 +62,21 @@ fun LoginContent(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         LoginInputColumn(
             viewState,
             onEmailChanged,
             onPasswordChanged,
             onLoginClicked,
-            onSignUpClicked
+            onSignUpClicked,
         )
 
-        if(viewState is LoginViewState.Submitting){
+        if (viewState is LoginViewState.Submitting) {
             Material3CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize()
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             )
         }
     }
@@ -90,8 +90,8 @@ private fun LoginInputColumn(
     onLoginClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
     contentPadding: PaddingValues = PaddingValues(
-        dimensionResource(id = R.dimen.screen_padding)
-    )
+        dimensionResource(id = R.dimen.screen_padding),
+    ),
 ) {
     Column(
         modifier = Modifier
@@ -106,7 +106,7 @@ private fun LoginInputColumn(
         VerticalSpacer(height = contentPadding.calculateTopPadding())
 
         AppLogo(
-            modifier = Modifier.padding(vertical = 88.dp)
+            modifier = Modifier.padding(vertical = 88.dp),
         )
 
         EmailInput(
@@ -134,7 +134,7 @@ private fun LoginInputColumn(
                 text = viewState.errorMessage.getString(),
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier
-                    .padding(top = 12.dp)
+                    .padding(top = 12.dp),
             )
         }
 
@@ -142,17 +142,17 @@ private fun LoginInputColumn(
 
         LoginButton(
             onClick = onLoginClicked,
-            enabled = viewState.inputEnabled
+            enabled = viewState.inputEnabled,
         )
 
         VerticalSpacer(height = 12.dp)
 
         SignUpButton(
             onClick = onSignUpClicked,
-            enabled = viewState.inputEnabled
+            enabled = viewState.inputEnabled,
         )
         VerticalSpacer(
-            height = contentPadding.calculateBottomPadding()
+            height = contentPadding.calculateBottomPadding(),
         )
     }
 }
@@ -165,19 +165,19 @@ private fun SignUpButton(
     SecondaryButton(
         text = stringResource(R.string.sign_up),
         onClick = onClick,
-        enabled = enabled
+        enabled = enabled,
     )
 }
 
 @Composable
 private fun LoginButton(
     onClick: () -> Unit,
-    enabled: Boolean
+    enabled: Boolean,
 ) {
     PrimaryButton(
         text = stringResource(R.string.log_in),
         onClick = onClick,
-        enabled = enabled
+        enabled = enabled,
     )
 }
 
@@ -197,7 +197,7 @@ private fun PasswordInput(
         enabled = enabled,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
-        )
+        ),
     )
 }
 
@@ -219,37 +219,36 @@ private fun EmailInput(
 
 @Composable
 private fun AppLogo(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painterResource(id = R.drawable.ic_toa_checkmark),
         contentDescription = stringResource(R.string.app_logo_container),
         modifier = modifier
-            .fillMaxWidth(APP_LOGO_WIDTH_PERCENTAGE)
+            .fillMaxWidth(APP_LOGO_WIDTH_PERCENTAGE),
     )
 }
 
 @Preview(
     name = "Night Mode - Empty",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Preview(
     name = "Day Mode - Empty",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Composable
 fun LoginScreenPreview(
     @PreviewParameter(LoginViewStateProvider::class)
     loginViewState: LoginViewState,
 ) {
-
     TOATheme {
         LoginContent(
             viewState = loginViewState,
             onEmailChanged = {},
             onPasswordChanged = {},
             onLoginClicked = {},
-            onSignUpClicked = {}
+            onSignUpClicked = {},
         )
     }
 }
@@ -259,7 +258,7 @@ class LoginViewStateProvider : PreviewParameterProvider<LoginViewState> {
         get() {
             val activeCredentials = Credentials(
                 Email("Test@testface.com"),
-                Password("PASSWORD")
+                Password("PASSWORD"),
             )
 
             return sequenceOf(

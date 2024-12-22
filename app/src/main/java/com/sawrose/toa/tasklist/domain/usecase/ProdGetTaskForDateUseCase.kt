@@ -9,9 +9,11 @@ import java.time.ZoneId
 import javax.inject.Inject
 
 class ProdGetTaskForDateUseCase @Inject constructor(
-    private val repository: TaskRepository
+    private val repository: TaskRepository,
 ) : GetTaskForDateUseCase {
-    override fun invoke(date: LocalDate): Flow<Result<List<Task>>> {
+    override fun invoke(
+        date: LocalDate,
+    ): Flow<Result<List<Task>>> {
         val dateInMillis = date.atStartOfDay()
             .atZone(ZoneId.systemDefault())
             .toInstant()
@@ -20,9 +22,9 @@ class ProdGetTaskForDateUseCase @Inject constructor(
         val incompleteTask = repository.fetchTaskForDate(dateInMillis, false)
         val completedTask = repository.fetchTaskForDate(dateInMillis, true)
         return incompleteTask.combineTransform(completedTask) { incomplete, complete ->
-           val completeTasks = complete.getOrNull()
+            val completeTasks = complete.getOrNull()
             val incomplete = incomplete.getOrNull()
-            if(completeTasks != null && incomplete != null) {
+            if (completeTasks != null && incomplete != null) {
                 emit(Result.success(completeTasks + incomplete))
             } else {
                 emit(Result.failure(Throwable("Error fetching tasks for a $date")))

@@ -16,7 +16,7 @@ inline fun <A, B, R> withAll(
     a: A,
     b: B,
     block: context(A, B)
-    () -> R
+    () -> R,
 ): R {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
@@ -31,7 +31,7 @@ inline fun <A, B, C, R> withAll(
     b: B,
     c: C,
     block: context(A, B, C)
-        () -> R,
+    () -> R,
 ): R {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)

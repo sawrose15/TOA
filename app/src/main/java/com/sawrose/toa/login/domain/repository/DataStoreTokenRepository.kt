@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DataStoreTokenRepository @Inject constructor(
-    private val tokenDataStore: DataStore<DataStoreToken>
-): TokenRepository {
-    override suspend fun storeToken(token: Token) {
+    private val tokenDataStore: DataStore<DataStoreToken>,
+) : TokenRepository {
+    override suspend fun storeToken(
+        token: Token,
+    ) {
         tokenDataStore.updateData { dataStoreToken ->
             dataStoreToken
                 .toBuilder()

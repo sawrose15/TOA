@@ -29,19 +29,18 @@ fun PrimaryButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
-
     Button(
         onClick = onClick,
         shape = ButtonShape,
         modifier = modifier
             .height(dimensionResource(id = R.dimen.button_height))
             .fillMaxWidth(),
-        enabled = enabled
+        enabled = enabled,
     ) {
         Text(
-            text = text.toUpperCase(Locale.current)
+            text = text.toUpperCase(Locale.current),
         )
     }
 }
@@ -80,7 +79,7 @@ fun DisablePrimaryButtonPreview() {
         PrimaryButton(
             text = "Primary button",
             onClick = {},
-            enabled = false
+            enabled = false,
         )
     }
 }

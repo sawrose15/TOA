@@ -34,7 +34,7 @@ fun TaskList(
         if (incompleteTasks.isEmpty()) {
             item {
                 EmptySectionCard(
-                    text = stringResource(id = R.string.no_incomplete_tasks)
+                    text = stringResource(id = R.string.no_incomplete_tasks),
                 )
             }
         } else {
@@ -45,7 +45,7 @@ fun TaskList(
                     ),
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 1.dp,
-                    )
+                    ),
                 ) {
                     incompleteTasks.forEachIndexed { index, task ->
                         TaskListItem(
@@ -58,12 +58,12 @@ fun TaskList(
                             },
                             modifier = Modifier
                                 .testTag("Incomplete Task ${task.id}")
-                                .animateItemPlacement()
+                                .animateItemPlacement(),
                         )
 
                         if (index != incompleteTasks.lastIndex) {
                             Divider(
-                                color = MaterialTheme.colorScheme.surface
+                                color = MaterialTheme.colorScheme.surface,
                             )
                         }
                     }
@@ -74,7 +74,7 @@ fun TaskList(
         if (completedTasks.isNotEmpty()) {
             item {
                 SectionHeader(
-                    text = stringResource(id = R.string.completed_tasks)
+                    text = stringResource(id = R.string.completed_tasks),
                 )
             }
 
@@ -85,21 +85,21 @@ fun TaskList(
                     ),
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 1.dp,
-                    )
-                ){
-                    completedTasks.forEachIndexed{ index, task ->
+                    ),
+                ) {
+                    completedTasks.forEachIndexed { index, task ->
                         TaskListItem(
                             task = task,
                             onRescheduleClicked = { onRescheduleClicked(task) },
                             onDoneClicked = { onDoneClicked(task) },
                             modifier = Modifier
                                 .testTag("Completed Task ${task.id}")
-                                .animateItemPlacement()
+                                .animateItemPlacement(),
                         )
 
-                        if(index != completedTasks.lastIndex){
+                        if (index != completedTasks.lastIndex) {
                             Divider(
-                                color = MaterialTheme.colorScheme.surface
+                                color = MaterialTheme.colorScheme.surface,
                             )
                         }
                     }
@@ -107,7 +107,6 @@ fun TaskList(
             }
         }
     }
-
 }
 
 @Composable

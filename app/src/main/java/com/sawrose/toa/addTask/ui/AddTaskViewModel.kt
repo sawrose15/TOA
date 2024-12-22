@@ -23,39 +23,43 @@ import javax.inject.Inject
 class AddTaskViewModel @Inject constructor(
     private val addTaskUseCase: AddTaskUseCase,
     savedStateHandle: SavedStateHandle,
-): ViewModel() {
+) : ViewModel() {
     private val args = AddTaskScreenDestination.argsFrom(savedStateHandle)
-    private val  _viewState: MutableStateFlow<AddTaskViewState> = MutableStateFlow(
+    private val _viewState: MutableStateFlow<AddTaskViewState> = MutableStateFlow(
         AddTaskViewState.Initial(
-            initialDate = args.initialDate
-        )
+            initialDate = args.initialDate,
+        ),
     )
 
     val viewState = _viewState.asStateFlow()
 
-    fun onTaskDescriptionChanged(newDescription: String) {
+    fun onTaskDescriptionChanged(
+        newDescription: String,
+    ) {
         val currentInput = _viewState.value.taskInput
         val newInput = currentInput.copy(
-            description = newDescription
+            description = newDescription,
         )
         _viewState.value = AddTaskViewState.Active(
             taskInput = newInput,
-            descriptionInputErrorMessage = null
+            descriptionInputErrorMessage = null,
         )
     }
 
-    fun onTaskScheduledDateChanged(newDate: LocalDate) {
+    fun onTaskScheduledDateChanged(
+        newDate: LocalDate,
+    ) {
         val currentInput = _viewState.value.taskInput
         val newInput = currentInput.copy(
-            scheduledDate = newDate
+            scheduledDate = newDate,
         )
         _viewState.value = AddTaskViewState.Active(
             taskInput = newInput,
-            descriptionInputErrorMessage = null
+            descriptionInputErrorMessage = null,
         )
     }
 
-    fun onSubmitButtonClicked(){
+    fun onSubmitButtonClicked() {
         val newTask = Task(
             id = UUID.randomUUID().toString(),
             description = _viewState.value.taskInput.description,
@@ -64,7 +68,7 @@ class AddTaskViewModel @Inject constructor(
                 .atZone(ZoneId.systemDefault())
                 .toInstant()
                 .toEpochMilli(),
-            completed = false
+            completed = false,
         )
 
         viewModelScope.launch {
@@ -72,16 +76,16 @@ class AddTaskViewModel @Inject constructor(
 
             val result = addTaskUseCase.invoke(
                 task = newTask,
-                ignoreTaskLimits = canTry == true
+                ignoreTaskLimits = canTry == true,
             )
 
-            _viewState.value = when(result){
+            _viewState.value = when (result) {
                 is AddTaskResult.Success -> {
                     AddTaskViewState.Completed
                 }
                 is AddTaskResult.Failure.InvalidInput -> {
                     result.toViewState(
-                        taskInput = _viewState.value.taskInput
+                        taskInput = _viewState.value.taskInput,
                     )
                 }
 
@@ -90,7 +94,7 @@ class AddTaskViewModel @Inject constructor(
                         taskInput = _viewState.value.taskInput,
                         errorMessage = UIText.ResourceText(R.string.err_max_tasks_per_day_exceeded),
                         overrideButtonText = UIText.ResourceText(R.string.action_submit_anyways),
-                        allowRetry = true
+                        allowRetry = true,
                     )
                 }
                 is AddTaskResult.Failure.Unknown -> {
@@ -100,11 +104,8 @@ class AddTaskViewModel @Inject constructor(
                     )
                 }
             }
-
         }
     }
-
-
 }
 
 private fun AddTaskResult.Failure.InvalidInput.toViewState(

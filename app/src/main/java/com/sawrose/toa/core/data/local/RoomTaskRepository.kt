@@ -11,10 +11,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-
 class RoomTaskRepository @Inject constructor(
-        private val taskDao: TaskDAO
-): TaskRepository {
+    private val taskDao: TaskDAO,
+) : TaskRepository {
     override fun fetchAllTasks(): Flow<TaskListResult> {
         return taskDao.fetchAllTasks()
             .map {
@@ -22,7 +21,10 @@ class RoomTaskRepository @Inject constructor(
             }
     }
 
-    override fun fetchTaskForDate(dateInMillis: Long, completed: Boolean): Flow<TaskListResult> {
+    override fun fetchTaskForDate(
+        dateInMillis: Long,
+        completed: Boolean,
+    ): Flow<TaskListResult> {
         val localDate = Instant.ofEpochMilli(dateInMillis)
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
@@ -30,27 +32,32 @@ class RoomTaskRepository @Inject constructor(
         return taskDao
             .fetchTasksForDate(
                 localDate.toPersistableDateString(),
-                completed
+                completed,
             )
             .map {
                 Result.success(it.toDomainTaskList())
             }
     }
 
-    override suspend fun addTask(task: Task): Result<Unit> {
+    override suspend fun addTask(
+        task: Task,
+    ): Result<Unit> {
         taskDao.insertTask(task.toTaskEntity())
         return Result.success(Unit)
     }
 
-    override suspend fun deleteTask(task: Task): Result<Unit> {
+    override suspend fun deleteTask(
+        task: Task,
+    ): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updateTask(task: Task): Result<Unit> {
+    override suspend fun updateTask(
+        task: Task,
+    ): Result<Unit> {
         taskDao.updateTask(task.toTaskEntity())
         return Result.success(Unit)
     }
-
 }
 
 private fun List<PersistableTask>.toDomainTaskList(): List<Task> {
@@ -73,7 +80,7 @@ private fun PersistableTask.toTask(): Task {
             .atZone(ZoneId.systemDefault())
             .toInstant()
             .toEpochMilli(),
-        completed = this.completed
+        completed = this.completed,
     )
 }
 

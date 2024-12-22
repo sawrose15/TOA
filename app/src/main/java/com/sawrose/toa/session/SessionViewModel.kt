@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SessionViewModel @Inject constructor(
-    private val userLoggedInUseCase: UserLoggedInUseCase
-): ViewModel() {
+    private val userLoggedInUseCase: UserLoggedInUseCase,
+) : ViewModel() {
     private val _sessionState: MutableStateFlow<SessionState> = MutableStateFlow(SessionState.UNINSTANTIATED)
     val sessionState = _sessionState.asStateFlow()
 
@@ -30,7 +30,7 @@ class SessionViewModel @Inject constructor(
             .isUserLoggedIn()
             .distinctUntilChanged()
             .onEach { loggedIn ->
-                val newSessionState = if(loggedIn){
+                val newSessionState = if (loggedIn) {
                     SessionState.LOGGED_IN
                 } else {
                     SessionState.LOGGED_OUT

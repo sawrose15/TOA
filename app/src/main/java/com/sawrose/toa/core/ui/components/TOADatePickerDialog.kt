@@ -32,19 +32,18 @@ fun TOADatePickerDialog(
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = {onComplete(datePickerState.selectedDateMillis ) }) {
+            TextButton(onClick = { onComplete(datePickerState.selectedDateMillis) }) {
                 Text(text = "DONE")
             }
         },
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         DatePicker(state = datePickerState)
     }
 }
 
 object TOADatePickerDialog {
-
     /**
      * Custom implementation of [SelectedDates] that restricts to only select dates
      * in the future.
@@ -52,12 +51,16 @@ object TOADatePickerDialog {
 
     @OptIn(ExperimentalMaterial3Api::class)
     val FutureDates = object : SelectableDates {
-        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        override fun isSelectableDate(
+            utcTimeMillis: Long,
+        ): Boolean {
             val todayStartMillis = LocalDate.now().toEpochMillisUTC()
             return utcTimeMillis >= todayStartMillis
         }
 
-        override fun isSelectableYear(year: Int): Boolean {
+        override fun isSelectableYear(
+            year: Int,
+        ): Boolean {
             val todayYear = LocalDate.now().year
             return year >= todayYear
         }
@@ -68,13 +71,11 @@ object TOADatePickerDialog {
 @PreviewLightDark
 @Composable
 private fun TOADatePickerDialogPreview() {
-
     TOATheme {
         TOADatePickerDialog(
             datePickerState = rememberDatePickerState(),
             onDismiss = {},
-            onComplete = {}
+            onComplete = {},
         )
     }
-
 }

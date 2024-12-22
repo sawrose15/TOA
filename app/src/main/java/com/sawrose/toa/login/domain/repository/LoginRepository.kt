@@ -10,6 +10,6 @@ interface LoginRepository {
      * @return a [Result] that contain [LoginResponse] if successful or error otherwise
      */
     suspend fun login(
-        credentials: Credentials
+        credentials: Credentials,
     ): Result<LoginResponse>
 }

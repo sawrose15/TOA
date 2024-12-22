@@ -15,17 +15,17 @@ import com.sawrose.toa.R
 @Composable
 @Destination(
     style = DestinationStyle.Dialog::class,
-    navArgsDelegate = AddTaskNavArguments::class
+    navArgsDelegate = AddTaskNavArguments::class,
 )
 fun AddTaskDialog(
     navigator: DestinationsNavigator,
-    viewModel: AddTaskViewModel = hiltViewModel()
+    viewModel: AddTaskViewModel = hiltViewModel(),
 ) {
     AddTaskContainer(
         viewModel = viewModel,
         navigator = navigator,
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
-            .padding(dimensionResource(id = R.dimen.screen_padding))
+            .padding(dimensionResource(id = R.dimen.screen_padding)),
     )
 }

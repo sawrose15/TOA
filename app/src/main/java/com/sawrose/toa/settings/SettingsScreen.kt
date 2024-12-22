@@ -7,7 +7,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 @Destination
 fun SettingsScreen(
-    viewmodel: SettingsViewModel = hiltViewModel()
+    viewmodel: SettingsViewModel = hiltViewModel(),
 ) {
-
 }

@@ -46,19 +46,18 @@ fun AddTaskContent(
     onTaskDescriptionChanged: (String) -> Unit,
     onTaskScheduledDateChanged: (LocalDate) -> Unit,
     onSubmitClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     val descriptionFocusRequester = remember {
         FocusRequester()
     }
-    
-    LaunchedEffect(Unit){
+
+    LaunchedEffect(Unit) {
         descriptionFocusRequester.requestFocus()
     }
 
     Box(
-        modifier = modifier
+        modifier = modifier,
     ) {
         AddTaskInputColumn(
             viewState = viewState,
@@ -71,15 +70,14 @@ fun AddTaskContent(
             descriptionFocusRequester = descriptionFocusRequester,
         )
 
-        if(viewState is AddTaskViewState.Submitting){
+        if (viewState is AddTaskViewState.Submitting) {
             Material3CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize()
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             )
         }
     }
-
 }
 
 @Composable
@@ -95,11 +93,11 @@ fun AddTaskInputColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.form_spacing)),
         horizontalAlignment = Alignment.CenterHorizontally,
-    ){
+    ) {
         Text(
             text = "What would you like to accomplish?",
             style = MaterialTheme.typography.headlineLarge,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         TOATextField(
@@ -112,7 +110,7 @@ fun AddTaskInputColumn(
                 ?.getString(),
             focusRequester = descriptionFocusRequester,
             modifier = Modifier
-                .testTag(ADD_TASK_DESCRIPTION_INPUT_TAG)
+                .testTag(ADD_TASK_DESCRIPTION_INPUT_TAG),
         )
 
         Text(
@@ -180,7 +178,6 @@ private fun AddTaskContentPreview(
 }
 
 class AddTaskViewStateProvider : PreviewParameterProvider<AddTaskViewState> {
-
     override val values: Sequence<AddTaskViewState>
         get() {
             val activeInput = TaskInput(

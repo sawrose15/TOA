@@ -9,11 +9,13 @@ import com.sawrose.toa.DataStoreToken
 import java.io.InputStream
 import java.io.OutputStream
 
-object DataStoreTokenSerializer: Serializer<DataStoreToken> {
+object DataStoreTokenSerializer : Serializer<DataStoreToken> {
     override val defaultValue: DataStoreToken
         get() = DataStoreToken.getDefaultInstance()
 
-    override suspend fun readFrom(input: InputStream): DataStoreToken {
+    override suspend fun readFrom(
+        input: InputStream,
+    ): DataStoreToken {
         try {
             return DataStoreToken.parseFrom(input)
         } catch (exception: Exception) {
@@ -21,12 +23,15 @@ object DataStoreTokenSerializer: Serializer<DataStoreToken> {
         }
     }
 
-    override suspend fun writeTo(t: DataStoreToken, output: OutputStream) {
+    override suspend fun writeTo(
+        t: DataStoreToken,
+        output: OutputStream,
+    ) {
         return t.writeTo(output)
     }
 }
 
 val Context.tokenDataStore: DataStore<DataStoreToken> by dataStore(
     fileName = "token.pb",
-    serializer = DataStoreTokenSerializer
+    serializer = DataStoreTokenSerializer,
 )

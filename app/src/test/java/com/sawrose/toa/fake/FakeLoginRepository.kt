@@ -15,7 +15,7 @@ class FakeLoginRepository {
 
     fun mockLoginWithCredentials(
         credentials: Credentials,
-        result: Result<LoginResponse>
+        result: Result<LoginResponse>,
     ) {
         coEvery {
             mock.login(credentials)

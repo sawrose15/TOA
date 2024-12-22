@@ -13,10 +13,8 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
-
     @Provides
     fun provideTokenDataStore(
         @ApplicationContext appContext: Context,
     ): DataStore<DataStoreToken> = appContext.tokenDataStore
-
 }

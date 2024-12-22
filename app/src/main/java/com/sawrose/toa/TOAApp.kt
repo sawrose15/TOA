@@ -5,7 +5,7 @@ import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class TOAApp: Application() {
+class TOAApp : Application() {
     override fun onCreate() {
         super.onCreate()
 

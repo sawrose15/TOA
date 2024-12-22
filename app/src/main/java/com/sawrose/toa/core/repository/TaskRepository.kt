@@ -9,7 +9,6 @@ typealias TaskListResult = Result<List<Task>>
  * This is the data contract between the data layer and the domain layer.
 * */
 interface TaskRepository {
-
     /**
      * Request for all the task created by authenticated user.
      * */
@@ -20,21 +19,27 @@ interface TaskRepository {
      * */
     fun fetchTaskForDate(
         dateInMillis: Long,
-        completed: Boolean
+        completed: Boolean,
     ): Flow<TaskListResult>
 
     /**
      * Add new [Task] from the user's input.
      * */
-    suspend fun addTask(task: Task): Result<Unit>
+    suspend fun addTask(
+        task: Task,
+    ): Result<Unit>
 
     /**
      * Delete the supplied [Task].
      * */
-    suspend fun deleteTask(task: Task): Result<Unit>
+    suspend fun deleteTask(
+        task: Task,
+    ): Result<Unit>
 
     /**
      * Update the supplied [Task].
      * */
-    suspend fun updateTask(task: Task): Result<Unit>
+    suspend fun updateTask(
+        task: Task,
+    ): Result<Unit>
 }

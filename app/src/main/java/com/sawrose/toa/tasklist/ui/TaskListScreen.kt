@@ -17,8 +17,8 @@ import com.sawrose.toa.destinations.AddTaskScreenDestination
 fun TaskListScreen(
     navigator: DestinationsNavigator,
     windowWidthSizeClass: WindowWidthSizeClass = WindowWidthSizeClass.Compact,
-    viewModel: TaskListViewModel = hiltViewModel()
-){
+    viewModel: TaskListViewModel = hiltViewModel(),
+) {
     val viewState = viewModel.viewState.collectAsStateWithLifecycle()
 
     TaskListContent(
@@ -26,16 +26,15 @@ fun TaskListScreen(
         onRescheduleClicked = viewModel::onRescheduleButtonClicked,
         onDoneClicked = viewModel::onDoneClicked,
         onAddButtonClicked = {
-             val navArgs = AddTaskNavArguments(
-                 initialDate = viewState.value.selectedDate,
-             )
+            val navArgs = AddTaskNavArguments(
+                initialDate = viewState.value.selectedDate,
+            )
 
-            val destination = if(windowWidthSizeClass != WindowWidthSizeClass.Compact) {
+            val destination = if (windowWidthSizeClass != WindowWidthSizeClass.Compact) {
                 AddTaskDialogDestination(navArgs.initialDate)
-            }
-            else {
+            } else {
                 AddTaskScreenDestination(
-                    initialDate = navArgs.initialDate
+                    initialDate = navArgs.initialDate,
                 )
             }
             navigator.navigate(destination)
@@ -48,7 +47,6 @@ fun TaskListScreen(
             .testTag(TaskListScreen.TEST_TAG),
     )
 }
-
 
 object TaskListScreen {
     const val TEST_TAG = "TASK_LIST_SCREEN"

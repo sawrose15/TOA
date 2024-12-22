@@ -21,13 +21,14 @@ fun TOANavigationRail(
             NavigationRailItem(
                 selected = tab == navigationConfig.selectedTab,
                 onClick = { navigationConfig.onTabClicked.invoke(tab) },
-                icon = { Icon(
-                    imageVector = tab.icon,
-                    contentDescription = stringResource(id = tab.labelTextRes)
-                )
-                       },
+                icon = {
+                    Icon(
+                        imageVector = tab.icon,
+                        contentDescription = stringResource(id = tab.labelTextRes),
+                    )
+                },
                 label = {
-                      Text(text = stringResource(id = tab.labelTextRes))
+                    Text(text = stringResource(id = tab.labelTextRes))
                 },
             )
         }

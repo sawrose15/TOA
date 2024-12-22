@@ -17,7 +17,7 @@ import com.sawrose.toa.destinations.TaskListScreenDestination
 @Composable
 fun LoginScreen(
     navigator: DestinationsNavigator,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val viewState = viewModel.viewState.collectAsState()
 

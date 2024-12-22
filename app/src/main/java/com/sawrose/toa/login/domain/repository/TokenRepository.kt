@@ -7,12 +7,11 @@ import kotlinx.coroutines.flow.Flow
  * This repository is responsible for fetching and storing a user's authentication token.
  */
 interface TokenRepository {
-
     /**
      * Given an [token], store this somewhere so it can be retrieved later.
      */
     suspend fun storeToken(
-        token: Token
+        token: Token,
     )
 
     /**

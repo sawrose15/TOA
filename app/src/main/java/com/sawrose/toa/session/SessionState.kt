@@ -9,6 +9,7 @@ enum class SessionState {
      * The user's session state is unknown.
      */
     UNINSTANTIATED,
+
     /**
      * The user is logged in.
      */
@@ -17,5 +18,5 @@ enum class SessionState {
     /**
      * The user is logged out.
      */
-    LOGGED_OUT
+    LOGGED_OUT,
 }

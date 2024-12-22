@@ -15,8 +15,7 @@ data class TaskListViewState(
     val errorMessage: UIText? = null,
     val selectedDate: LocalDate = LocalDate.now(),
     val taskToReschedule: Task? = null,
-    val alertMessage: List<AlertMessage> = emptyList()
-
+    val alertMessage: List<AlertMessage> = emptyList(),
 ) {
     /**
      * As long as we are not in a loading or error scenario, we can show the task list (or empty state).

@@ -9,9 +9,12 @@ import java.time.ZoneId
 import javax.inject.Inject
 
 class ProdAddTaskUseCase @Inject constructor(
-    private val repository: RoomTaskRepository
+    private val repository: RoomTaskRepository,
 ) : AddTaskUseCase {
-    override suspend fun invoke(task: Task, ignoreTaskLimits: Boolean): AddTaskResult {
+    override suspend fun invoke(
+        task: Task,
+        ignoreTaskLimits: Boolean,
+    ): AddTaskResult {
         val sanitizedTask = task.copy(
             description = task.description.trim(),
         )
@@ -31,13 +34,14 @@ class ProdAddTaskUseCase @Inject constructor(
             },
             onFailure = {
                 AddTaskResult.Failure.Unknown
-            }
+            },
         )
     }
 
-
-    private fun validateTask(task: Task): AddTaskResult.Failure.InvalidInput? {
-       val emptyDescription = task.description.isBlank()
+    private fun validateTask(
+        task: Task,
+    ): AddTaskResult.Failure.InvalidInput? {
+        val emptyDescription = task.description.isBlank()
         val scheduleDate = Instant
             .ofEpochMilli(task.scheduleTimeInMillis)
             .atZone(ZoneId.systemDefault())

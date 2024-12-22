@@ -13,31 +13,30 @@ import androidx.compose.ui.res.stringResource
 fun TOABottomNavigation(
     navigationConfig: TOANavigationConfig,
     modifier: Modifier = Modifier,
-){
+) {
     NavigationBar(
         modifier = modifier,
-    ){
+    ) {
         navigationConfig.tabs.forEach { tab ->
             NavigationBarItem(
                 selected = tab == navigationConfig.selectedTab,
                 onClick = {
                     navigationConfig.onTabClicked.invoke(tab)
-                          },
+                },
                 icon = {
-                       Icon(
-                           imageVector = tab.icon,
-                           contentDescription = null,
-                           tint = if (tab == navigationConfig.selectedTab) {
-                               MaterialTheme.colorScheme.primary
-                           } else {
-                               MaterialTheme.colorScheme.onSurface
-                           }
-                       )
+                    Icon(
+                        imageVector = tab.icon,
+                        contentDescription = null,
+                        tint = if (tab == navigationConfig.selectedTab) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
+                    )
                 },
                 label = {
                     Text(text = stringResource(id = tab.labelTextRes))
-                }
-
+                },
             )
         }
     }

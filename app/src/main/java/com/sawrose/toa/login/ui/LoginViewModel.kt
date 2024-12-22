@@ -17,16 +17,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val credentialsLoginUseCase: ProdCredentialsLoginUseCase
+    private val credentialsLoginUseCase: ProdCredentialsLoginUseCase,
 ) : ViewModel() {
-
     private val _viewState: MutableStateFlow<LoginViewState> =
         MutableStateFlow(LoginViewState.Initial)
 
     val viewState: StateFlow<LoginViewState>
         get() = _viewState
 
-    fun emailChanged(email: String) {
+    fun emailChanged(
+        email: String,
+    ) {
         val currentCredentials = _viewState.value.credentials
 
         val currentPasswordErrorMessage =
@@ -39,7 +40,9 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    fun passwordChanged(password: String) {
+    fun passwordChanged(
+        password: String,
+    ) {
         val currentCredentials = _viewState.value.credentials
         val currentEmailErrorMessage =
             (_viewState.value as? LoginViewState.Active)?.emailInputErrorMessage
@@ -70,13 +73,13 @@ class LoginViewModel @Inject constructor(
             is LoginResult.Failure.InvalidCredentials -> {
                 LoginViewState.SubmissionError(
                     credentials = currentCredentials,
-                    errorMessage = UIText.ResourceText(R.string.err_invalid_credentials)
+                    errorMessage = UIText.ResourceText(R.string.err_invalid_credentials),
                 )
             }
             is LoginResult.Failure.Unknown -> {
                 LoginViewState.SubmissionError(
                     credentials = currentCredentials,
-                    errorMessage = UIText.ResourceText(R.string.err_login_failure)
+                    errorMessage = UIText.ResourceText(R.string.err_login_failure),
                 )
             }
             is LoginResult.Failure.EmptyCredentials -> {
@@ -94,15 +97,21 @@ class LoginViewModel @Inject constructor(
     }
 }
 
-private fun Credentials.withUpdateEmail(email: String): Credentials {
+private fun Credentials.withUpdateEmail(
+    email: String,
+): Credentials {
     return this.copy(email = Email(email))
 }
 
-private fun Credentials.withUpdatePassword(password: String): Credentials {
+private fun Credentials.withUpdatePassword(
+    password: String,
+): Credentials {
     return this.copy(password = Password(password))
 }
 
-private fun LoginResult.Failure.EmptyCredentials.toLoginViewState(credentials: Credentials): LoginViewState {
+private fun LoginResult.Failure.EmptyCredentials.toLoginViewState(
+    credentials: Credentials,
+): LoginViewState {
     return LoginViewState.Active(
         credentials = credentials,
         emailInputErrorMessage = UIText.ResourceText(R.string.err_empty_email).takeIf {

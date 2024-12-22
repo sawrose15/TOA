@@ -12,11 +12,11 @@ import androidx.compose.ui.unit.Dp
 fun Material3CircularProgressIndicator(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
-    strokeWidth:Dp = ProgressIndicatorDefaults.CircularStrokeWidth
-){
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
+) {
     CircularProgressIndicator(
         modifier = modifier,
         color = color,
-        strokeWidth = strokeWidth
+        strokeWidth = strokeWidth,
     )
 }

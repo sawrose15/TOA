@@ -32,6 +32,6 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindTaskRepository(
-        taskRepository: RoomTaskRepository
+        taskRepository: RoomTaskRepository,
     ): TaskRepository
 }

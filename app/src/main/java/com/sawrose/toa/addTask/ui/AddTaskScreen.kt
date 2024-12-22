@@ -12,21 +12,19 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.sawrose.toa.R
 
 @Destination(
-    navArgsDelegate = AddTaskNavArguments::class
+    navArgsDelegate = AddTaskNavArguments::class,
 )
 @Composable
 fun AddTaskScreen(
     navigator: DestinationsNavigator,
-    viewModel: AddTaskViewModel = hiltViewModel()
+    viewModel: AddTaskViewModel = hiltViewModel(),
 ) {
-
     AddTaskContainer(
         viewModel = viewModel,
         navigator = navigator,
         modifier = Modifier
             .fillMaxSize()
             .padding(dimensionResource(id = R.dimen.screen_padding))
-            .statusBarsPadding()
+            .statusBarsPadding(),
     )
-
 }

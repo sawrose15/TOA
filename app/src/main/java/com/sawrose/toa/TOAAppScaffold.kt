@@ -18,21 +18,21 @@ fun TOAAppScaffold(
         NavigationType.BOTTOM_NAVIGATION -> {
             VerticalAppScaffold(
                 navigationContent = navigationContent,
-                appContent = appContent
+                appContent = appContent,
             )
         }
 
         NavigationType.NAVIGATION_RAIL -> {
             HorizontalAppScaffold(
                 navigationContent = navigationContent,
-                appContent = appContent
+                appContent = appContent,
             )
         }
 
         NavigationType.PERMANENT_NAVIGATION_DRAWER -> {
             PermanentNavigationScaffold(
                 navigationContent = navigationContent,
-                appContent = appContent
+                appContent = appContent,
             )
         }
     }
@@ -42,29 +42,29 @@ fun TOAAppScaffold(
 fun HorizontalAppScaffold(
     navigationContent: @Composable () -> Unit,
     appContent: @Composable () -> Unit,
-){
+) {
     Row {
         navigationContent()
 
-        Box(modifier = Modifier
-            .weight(1f)
-        ){
+        Box(
+            modifier = Modifier
+                .weight(1f),
+        ) {
             appContent()
         }
     }
-
 }
 
 @Composable
 fun VerticalAppScaffold(
     navigationContent: @Composable () -> Unit,
     appContent: @Composable () -> Unit,
-){
-    Column{
+) {
+    Column {
         Box(
             modifier = Modifier
-                .weight(1f)
-        ){
+                .weight(1f),
+        ) {
             appContent()
         }
 
@@ -76,12 +76,13 @@ fun VerticalAppScaffold(
 fun PermanentNavigationScaffold(
     navigationContent: @Composable () -> Unit,
     appContent: @Composable () -> Unit,
-){
+) {
     PermanentNavigationDrawer(
         drawerContent = {
-            navigationContent() },
+            navigationContent()
+        },
         content = {
             appContent()
-        }
+        },
     )
 }

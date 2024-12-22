@@ -29,18 +29,18 @@ sealed class LoginViewState(
         val emailInputErrorMessage: UIText? = null,
         val passwordInputErrorMessage: UIText? = null,
     ) : LoginViewState(
-        credentials = credentials
-    )
+            credentials = credentials,
+        )
 
     /**
      * the state of screen the user submits the login information
      */
     data class Submitting(
-        override val credentials: Credentials
+        override val credentials: Credentials,
     ) : LoginViewState(
-        credentials = credentials,
-        inputEnabled = false
-    )
+            credentials = credentials,
+            inputEnabled = false,
+        )
 
     /**
      * the state of screen when there is error while submitting
@@ -49,8 +49,8 @@ sealed class LoginViewState(
         override val credentials: Credentials,
         val errorMessage: UIText,
     ) : LoginViewState(
-        credentials = credentials,
-    )
+            credentials = credentials,
+        )
 
     object Completed : LoginViewState(
         credentials = Credentials(),
