@@ -8,13 +8,16 @@ import com.sawrose.toa.login.domain.model.Credentials
 import com.sawrose.toa.login.domain.model.Email
 import com.sawrose.toa.login.domain.model.LoginResult
 import com.sawrose.toa.login.domain.model.Password
-import com.sawrose.toa.login.domain.usecases.CredentialsLoginUseCase
+import com.sawrose.toa.login.domain.usecases.ProdCredentialsLoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel(
-    private val credentialsLoginUseCase: CredentialsLoginUseCase
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val credentialsLoginUseCase: ProdCredentialsLoginUseCase
 ) : ViewModel() {
 
     private val _viewState: MutableStateFlow<LoginViewState> =
@@ -54,7 +57,7 @@ class LoginViewModel(
             credentials = currentCredential,
         )
         viewModelScope.launch {
-            val loginResult = credentialsLoginUseCase.invoke(currentCredential)
+            val loginResult = credentialsLoginUseCase.login(currentCredential)
             handleLoginResult(loginResult, currentCredential)
         }
     }
@@ -76,6 +79,10 @@ class LoginViewModel(
                     errorMessage = UIText.ResourceText(R.string.err_login_failure)
                 )
             }
+            is LoginResult.Failure.EmptyCredentials -> {
+                loginResult.toLoginViewState(currentCredentials)
+            }
+
             is LoginResult.Success -> {
                 LoginViewState.Completed
             }
@@ -93,4 +100,16 @@ private fun Credentials.withUpdateEmail(email: String): Credentials {
 
 private fun Credentials.withUpdatePassword(password: String): Credentials {
     return this.copy(password = Password(password))
+}
+
+private fun LoginResult.Failure.EmptyCredentials.toLoginViewState(credentials: Credentials): LoginViewState {
+    return LoginViewState.Active(
+        credentials = credentials,
+        emailInputErrorMessage = UIText.ResourceText(R.string.err_empty_email).takeIf {
+            this.emptyEmail
+        },
+        passwordInputErrorMessage = UIText.ResourceText(R.string.err_empty_password).takeIf {
+            this.emptyPassword
+        },
+    )
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +30,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sawrose.toa.R
 import com.sawrose.toa.core.ui.UIText
+import com.sawrose.toa.core.ui.components.Material3CircularProgressIndicator
 import com.sawrose.toa.core.ui.components.PrimaryButton
 import com.sawrose.toa.core.ui.components.SecondaryButton
 import com.sawrose.toa.core.ui.components.TOATextField
@@ -45,7 +45,7 @@ private const val APP_LOGO_WIDTH_PERCENTAGE = 0.75F
 
 /**
  * this composable maintain the entire login screen for handling user login
- * @param[loginViewState] the current state of the screen to render.
+ * @param[viewState] the current state of the screen to render.
  * @param[onEmailChanged] a callback invoked when the user enters their email
  * @param[onPasswordChanged] a callback invoked when the user entered the password
  * @param[onLoginClicked] a callback invoked when the user clicks the login button.
@@ -53,29 +53,32 @@ private const val APP_LOGO_WIDTH_PERCENTAGE = 0.75F
  */
 @Composable
 fun LoginContent(
-    loginViewState: LoginViewState,
+    viewState: LoginViewState,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onLoginClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         LoginInputColumn(
-            loginViewState,
+            viewState,
             onEmailChanged,
             onPasswordChanged,
             onLoginClicked,
             onSignUpClicked
         )
 
-        CircularProgressIndicator(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.Center)
-        )
+        if(viewState is LoginViewState.Submitting){
+            Material3CircularProgressIndicator(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.Center)
+            )
+        }
     }
 }
 
@@ -242,7 +245,7 @@ fun LoginScreenPreview(
 
     TOATheme {
         LoginContent(
-            loginViewState = loginViewState,
+            viewState = loginViewState,
             onEmailChanged = {},
             onPasswordChanged = {},
             onLoginClicked = {},
