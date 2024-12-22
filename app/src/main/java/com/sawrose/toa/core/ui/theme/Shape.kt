@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.sawrose.toa.core.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape

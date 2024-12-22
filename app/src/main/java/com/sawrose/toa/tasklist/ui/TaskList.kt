@@ -1,6 +1,8 @@
 package com.sawrose.toa.tasklist.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +24,7 @@ import com.sawrose.toa.core.ui.theme.TOATheme
 import com.sawrose.toa.model.Task
 
 @Composable
+@Suppress("LongMethod")
 fun TaskList(
     incompleteTasks: List<Task>,
     completedTasks: List<Task>,
@@ -28,7 +32,11 @@ fun TaskList(
     onDoneClicked: (Task) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_padding)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_padding)),
+        modifier = modifier
+    ) {
         if (incompleteTasks.isEmpty()) {
             item {
                 EmptySectionCard(

@@ -5,6 +5,7 @@ import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
 import androidx.datastore.dataStore
+import com.google.protobuf.InvalidProtocolBufferException
 import com.sawrose.toa.DataStoreToken
 import java.io.InputStream
 import java.io.OutputStream
@@ -18,7 +19,7 @@ object DataStoreTokenSerializer : Serializer<DataStoreToken> {
     ): DataStoreToken {
         try {
             return DataStoreToken.parseFrom(input)
-        } catch (exception: Exception) {
+        } catch (exception: InvalidProtocolBufferException) {
             throw CorruptionException("Cannot read proto.", exception)
         }
     }
