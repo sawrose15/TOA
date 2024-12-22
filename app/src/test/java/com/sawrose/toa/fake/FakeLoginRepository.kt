@@ -1,10 +1,10 @@
 package com.sawrose.toa.fake
 
-import com.sawrose.toa.core.data.Result
 import com.sawrose.toa.login.domain.model.Credentials
 import com.sawrose.toa.login.domain.model.LoginResponse
-import com.sawrose.toa.login.repository.LoginRepository
+import com.sawrose.toa.login.domain.repository.LoginRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 
 /**
@@ -15,10 +15,16 @@ class FakeLoginRepository {
 
     fun mockLoginWithCredentials(
         credentials: Credentials,
-        result: Result<LoginResponse>
+        result: Result<LoginResponse>,
     ) {
         coEvery {
-            mock.loginWithCredentials(credentials)
+            mock.login(credentials)
         } returns result
+    }
+
+    fun verifyNoLoginCall() {
+        coVerify(exactly = 0) {
+            mock.login(any())
+        }
     }
 }

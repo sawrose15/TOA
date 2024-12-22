@@ -2,10 +2,10 @@ build:
   maxIssues: 0
   excludeCorrectable: false
   weights:
-    # complexity: 2
-    # LongParameterList: 1
-    # style: 1
-    # comments: 1
+  # complexity: 2
+  # LongParameterList: 1
+  # style: 1
+  # comments: 1
 
 config:
   validation: true
@@ -33,11 +33,11 @@ processors:
 console-reports:
   active: true
   exclude:
-     - 'ProjectStatisticsReport'
-     - 'ComplexityReport'
-     - 'NotificationReport'
-  #  - 'FindingsReport'
-     - 'FileBasedFindingsReport'
+    - 'ProjectStatisticsReport'
+    - 'ComplexityReport'
+    - 'NotificationReport'
+    #  - 'FindingsReport'
+    - 'FileBasedFindingsReport'
 
 output-reports:
   active: true
@@ -100,12 +100,12 @@ complexity:
     active: true
     threshold: 60
   LongParameterList:
-    active: false
+    active: true
     functionThreshold: 6
     constructorThreshold: 7
-    ignoreDefaultParameters: false
+    ignoreDefaultParameters: true
     ignoreDataClasses: true
-    ignoreAnnotated: []
+    ignoreAnnotated: ['Composable']
   MethodOverloading:
     active: false
     threshold: 6
@@ -204,10 +204,10 @@ exceptions:
   SwallowedException:
     active: true
     ignoredExceptionTypes:
-     - InterruptedException
-     - NumberFormatException
-     - ParseException
-     - MalformedURLException
+      - InterruptedException
+      - NumberFormatException
+      - ParseException
+      - MalformedURLException
     allowedExceptionNameRegex: '_|(ignore|expected).*'
   ThrowingExceptionFromFinally:
     active: true
@@ -217,166 +217,31 @@ exceptions:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     exceptions:
-     - IllegalArgumentException
-     - IllegalStateException
-     - IOException
+      - IllegalArgumentException
+      - IllegalStateException
+      - IOException
   ThrowingNewInstanceOfSameException:
     active: true
   TooGenericExceptionCaught:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     exceptionNames:
-     - ArrayIndexOutOfBoundsException
-     - Error
-     - Exception
-     - IllegalMonitorStateException
-     - NullPointerException
-     - IndexOutOfBoundsException
-     - RuntimeException
-     - Throwable
+      - ArrayIndexOutOfBoundsException
+      - Error
+      - Exception
+      - IllegalMonitorStateException
+      - NullPointerException
+      - IndexOutOfBoundsException
+      - RuntimeException
+      - Throwable
     allowedExceptionNameRegex: '_|(ignore|expected).*'
   TooGenericExceptionThrown:
     active: true
     exceptionNames:
-     - Error
-     - Exception
-     - Throwable
-     - RuntimeException
-
-formatting:
-  active: true
-  android: false
-  autoCorrect: true
-  AnnotationOnSeparateLine:
-    active: false
-    autoCorrect: true
-  AnnotationSpacing:
-    active: false
-    autoCorrect: true
-  ArgumentListWrapping:
-    active: false
-    autoCorrect: true
-    indentSize: 4
-    maxLineLength: 120
-  ChainWrapping:
-    active: true
-    autoCorrect: true
-  CommentSpacing:
-    active: true
-    autoCorrect: true
-  EnumEntryNameCase:
-    active: false
-    autoCorrect: true
-  Filename:
-    active: true
-  FinalNewline:
-    active: true
-    autoCorrect: true
-    insertFinalNewLine: true
-  ImportOrdering:
-    active: false
-    autoCorrect: true
-    layout: '*,java.**,javax.**,kotlin.**,^'
-  Indentation:
-    active: false
-    autoCorrect: true
-    indentSize: 4
-    continuationIndentSize: 4
-  MaximumLineLength:
-    active: true
-    maxLineLength: 120
-    ignoreBackTickedIdentifier: false
-  ModifierOrdering:
-    active: true
-    autoCorrect: true
-  MultiLineIfElse:
-    active: true
-    autoCorrect: true
-  NoBlankLineBeforeRbrace:
-    active: true
-    autoCorrect: true
-  NoConsecutiveBlankLines:
-    active: true
-    autoCorrect: true
-  NoEmptyClassBody:
-    active: true
-    autoCorrect: true
-  NoEmptyFirstLineInMethodBlock:
-    active: false
-    autoCorrect: true
-  NoLineBreakAfterElse:
-    active: true
-    autoCorrect: true
-  NoLineBreakBeforeAssignment:
-    active: true
-    autoCorrect: true
-  NoMultipleSpaces:
-    active: true
-    autoCorrect: true
-  NoSemicolons:
-    active: true
-    autoCorrect: true
-  NoTrailingSpaces:
-    active: true
-    autoCorrect: true
-  NoUnitReturn:
-    active: true
-    autoCorrect: true
-  NoUnusedImports:
-    active: true
-    autoCorrect: true
-  NoWildcardImports:
-    active: true
-  PackageName:
-    active: true
-    autoCorrect: true
-  ParameterListWrapping:
-    active: true
-    autoCorrect: true
-    indentSize: 4
-    maxLineLength: 120
-  SpacingAroundAngleBrackets:
-    active: false
-    autoCorrect: true
-  SpacingAroundColon:
-    active: true
-    autoCorrect: true
-  SpacingAroundComma:
-    active: true
-    autoCorrect: true
-  SpacingAroundCurly:
-    active: true
-    autoCorrect: true
-  SpacingAroundDot:
-    active: true
-    autoCorrect: true
-  SpacingAroundDoubleColon:
-    active: false
-    autoCorrect: true
-  SpacingAroundKeyword:
-    active: true
-    autoCorrect: true
-  SpacingAroundOperators:
-    active: true
-    autoCorrect: true
-  SpacingAroundParens:
-    active: true
-    autoCorrect: true
-  SpacingAroundRangeOperator:
-    active: true
-    autoCorrect: true
-  SpacingAroundUnaryOperator:
-    active: false
-    autoCorrect: true
-  SpacingBetweenDeclarationsWithAnnotations:
-    active: false
-    autoCorrect: true
-  SpacingBetweenDeclarationsWithComments:
-    active: false
-    autoCorrect: true
-  StringTemplate:
-    active: true
-    autoCorrect: true
+      - Error
+      - Exception
+      - Throwable
+      - RuntimeException
 
 naming:
   active: true
@@ -612,9 +477,9 @@ style:
     active: true
     maxJumpCount: 1
   MagicNumber:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
-    ignoreNumbers: ['-1', '0', '1', '2']
+    ignoreNumbers: ['-1', '0', '1', '2', '10']
     ignoreHashCodeFunction: true
     ignorePropertyDeclaration: false
     ignoreLocalVariableDeclaration: false
@@ -625,6 +490,8 @@ style:
     ignoreEnums: false
     ignoreRanges: false
     ignoreExtensionFunctions: true
+    ignoreAnnotated: ['Preview']
+
   MandatoryBracesIfStatements:
     active: false
   MandatoryBracesLoops:
@@ -644,7 +511,7 @@ style:
   NestedClassesVisibility:
     active: true
   NewLineAtEndOfFile:
-    active: false
+    active: true
   NoTabs:
     active: false
   ObjectLiteralToLambda:
@@ -667,7 +534,7 @@ style:
     active: false
   ReturnCount:
     active: true
-    max: 2
+    max: 3
     excludedFunctions: 'equals'
     excludeLabeled: false
     excludeReturnFromLambda: true

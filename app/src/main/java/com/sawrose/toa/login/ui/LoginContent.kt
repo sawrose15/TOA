@@ -4,31 +4,38 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sawrose.toa.R
+import com.sawrose.toa.core.ui.UIText
+import com.sawrose.toa.core.ui.components.Material3CircularProgressIndicator
 import com.sawrose.toa.core.ui.components.PrimaryButton
 import com.sawrose.toa.core.ui.components.SecondaryButton
 import com.sawrose.toa.core.ui.components.TOATextField
 import com.sawrose.toa.core.ui.components.VerticalSpacer
+import com.sawrose.toa.core.ui.getString
 import com.sawrose.toa.core.ui.theme.TOATheme
 import com.sawrose.toa.login.domain.model.Credentials
 import com.sawrose.toa.login.domain.model.Email
@@ -38,7 +45,7 @@ private const val APP_LOGO_WIDTH_PERCENTAGE = 0.75F
 
 /**
  * this composable maintain the entire login screen for handling user login
- * @param[loginViewState] the current state of the screen to render.
+ * @param[viewState] the current state of the screen to render.
  * @param[onEmailChanged] a callback invoked when the user enters their email
  * @param[onPasswordChanged] a callback invoked when the user entered the password
  * @param[onLoginClicked] a callback invoked when the user clicks the login button.
@@ -46,30 +53,30 @@ private const val APP_LOGO_WIDTH_PERCENTAGE = 0.75F
  */
 @Composable
 fun LoginContent(
-    loginViewState: LoginViewState,
+    viewState: LoginViewState,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onLoginClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Surface(
-        color = MaterialTheme.colors.background,
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            LoginInputColumn(
-                loginViewState,
-                onEmailChanged,
-                onPasswordChanged,
-                onLoginClicked,
-                onSignUpClicked
-            )
+        LoginInputColumn(
+            viewState,
+            onEmailChanged,
+            onPasswordChanged,
+            onLoginClicked,
+            onSignUpClicked,
+        )
 
-            CircularProgressIndicator(
+        if (viewState is LoginViewState.Submitting) {
+            Material3CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize()
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             )
         }
     }
@@ -81,24 +88,34 @@ private fun LoginInputColumn(
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onLoginClicked: () -> Unit,
-    onSignUpClicked: () -> Unit
+    onSignUpClicked: () -> Unit,
+    contentPadding: PaddingValues = PaddingValues(
+        dimensionResource(id = R.dimen.screen_padding),
+    ),
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.screen_padding)),
+            .padding(
+                start = contentPadding.calculateStartPadding(LocalLayoutDirection.current),
+                end = contentPadding.calculateStartPadding(LocalLayoutDirection.current),
+            )
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.weight(1F))
+        VerticalSpacer(height = contentPadding.calculateTopPadding())
 
-        AppLogo()
-
-        Spacer(modifier = Modifier.weight(1F))
+        AppLogo(
+            modifier = Modifier.padding(vertical = 88.dp),
+        )
 
         EmailInput(
             text = viewState.credentials.email.value,
             onTextChanged = onEmailChanged,
-            errorMessage = (viewState as? LoginViewState.InputError)?.emailInputErrorMessage
+            errorMessage = (viewState as? LoginViewState.Active)
+                ?.emailInputErrorMessage
+                ?.getString(),
+            enabled = viewState.inputEnabled,
         )
 
         VerticalSpacer(height = 12.dp)
@@ -106,15 +123,18 @@ private fun LoginInputColumn(
         PasswordInput(
             text = viewState.credentials.password.value,
             onTextChanged = onPasswordChanged,
-            errorMessage = (viewState as? LoginViewState.InputError)?.passwordInputErrorMessage
+            errorMessage = (viewState as? LoginViewState.Active)
+                ?.passwordInputErrorMessage
+                ?.getString(),
+            enabled = viewState.inputEnabled,
         )
 
         if (viewState is LoginViewState.SubmissionError) {
             Text(
-                text = viewState.errorMessage,
-                color = MaterialTheme.colors.error,
+                text = viewState.errorMessage.getString(),
+                color = MaterialTheme.colorScheme.error,
                 modifier = Modifier
-                    .padding(top = 12.dp)
+                    .padding(top = 12.dp),
             )
         }
 
@@ -122,14 +142,17 @@ private fun LoginInputColumn(
 
         LoginButton(
             onClick = onLoginClicked,
-            enabled = viewState.buttonEnabled
+            enabled = viewState.inputEnabled,
         )
 
         VerticalSpacer(height = 12.dp)
 
         SignUpButton(
             onClick = onSignUpClicked,
-            enabled = viewState.buttonEnabled
+            enabled = viewState.inputEnabled,
+        )
+        VerticalSpacer(
+            height = contentPadding.calculateBottomPadding(),
         )
     }
 }
@@ -142,19 +165,19 @@ private fun SignUpButton(
     SecondaryButton(
         text = stringResource(R.string.sign_up),
         onClick = onClick,
-        enabled = enabled
+        enabled = enabled,
     )
 }
 
 @Composable
 private fun LoginButton(
     onClick: () -> Unit,
-    enabled: Boolean
+    enabled: Boolean,
 ) {
     PrimaryButton(
         text = stringResource(R.string.log_in),
         onClick = onClick,
-        enabled = enabled
+        enabled = enabled,
     )
 }
 
@@ -163,13 +186,18 @@ private fun PasswordInput(
     text: String,
     onTextChanged: (String) -> Unit,
     errorMessage: String?,
+    enabled: Boolean,
 ) {
     TOATextField(
         text = text,
         onTextChanged = onTextChanged,
         labelText = stringResource(R.string.password),
         errorMessage = errorMessage,
-        visualTransformation = PasswordVisualTransformation()
+        visualTransformation = PasswordVisualTransformation('_'),
+        enabled = enabled,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+        ),
     )
 }
 
@@ -178,48 +206,49 @@ private fun EmailInput(
     text: String,
     onTextChanged: (String) -> Unit,
     errorMessage: String?,
+    enabled: Boolean,
 ) {
     TOATextField(
         text = text,
         onTextChanged = onTextChanged,
         labelText = stringResource(R.string.email),
-        errorMessage = errorMessage
+        errorMessage = errorMessage,
+        enabled = enabled,
     )
 }
 
 @Composable
 private fun AppLogo(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painterResource(id = R.drawable.ic_toa_checkmark),
         contentDescription = stringResource(R.string.app_logo_container),
         modifier = modifier
-            .fillMaxWidth(APP_LOGO_WIDTH_PERCENTAGE)
+            .fillMaxWidth(APP_LOGO_WIDTH_PERCENTAGE),
     )
 }
 
 @Preview(
     name = "Night Mode - Empty",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Preview(
     name = "Day Mode - Empty",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Composable
 fun LoginScreenPreview(
     @PreviewParameter(LoginViewStateProvider::class)
     loginViewState: LoginViewState,
 ) {
-
     TOATheme {
         LoginContent(
-            loginViewState = loginViewState,
+            viewState = loginViewState,
             onEmailChanged = {},
             onPasswordChanged = {},
             onLoginClicked = {},
-            onSignUpClicked = {}
+            onSignUpClicked = {},
         )
     }
 }
@@ -229,7 +258,7 @@ class LoginViewStateProvider : PreviewParameterProvider<LoginViewState> {
         get() {
             val activeCredentials = Credentials(
                 Email("Test@testface.com"),
-                Password("PASSWORD")
+                Password("PASSWORD"),
             )
 
             return sequenceOf(
@@ -238,12 +267,12 @@ class LoginViewStateProvider : PreviewParameterProvider<LoginViewState> {
                 LoginViewState.Submitting(activeCredentials),
                 LoginViewState.SubmissionError(
                     credentials = activeCredentials,
-                    errorMessage = "Something went wrong.",
+                    errorMessage = UIText.StringText("Something went wrong."),
                 ),
-                LoginViewState.InputError(
+                LoginViewState.Active(
                     credentials = activeCredentials,
-                    emailInputErrorMessage = "Please enter an email.",
-                    passwordInputErrorMessage = "Please enter a password",
+                    emailInputErrorMessage = UIText.StringText("Please enter an email."),
+                    passwordInputErrorMessage = UIText.StringText("Please enter a password"),
                 ),
             )
         }

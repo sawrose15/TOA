@@ -1,7 +1,6 @@
 package com.sawrose.toa.login.domain.usecases
 
 import com.google.common.truth.Truth.assertThat
-import com.sawrose.toa.core.data.Result
 import com.sawrose.toa.fake.FakeLoginRepository
 import com.sawrose.toa.fake.FakeTokenRepository
 import com.sawrose.toa.login.domain.model.AuthToken
@@ -13,12 +12,14 @@ import com.sawrose.toa.login.domain.model.LoginResult
 import com.sawrose.toa.login.domain.model.Password
 import com.sawrose.toa.login.domain.model.RefreshToken
 import com.sawrose.toa.login.domain.model.Token
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class ProdCredentialsLoginUseCaseTest {
-
     private val defaultCredentials = Credentials(
         email = Email("test@test.com"),
         password = Password("test123"),
@@ -26,7 +27,7 @@ class ProdCredentialsLoginUseCaseTest {
 
     private val defaultToken = Token(
         authToken = AuthToken("Auth"),
-        refreshToken = RefreshToken("Refresh")
+        refreshToken = RefreshToken("Refresh"),
     )
 
     private lateinit var loginRepository: FakeLoginRepository
@@ -39,68 +40,93 @@ class ProdCredentialsLoginUseCaseTest {
     }
 
     @Test
-    fun testSuccessfulLogin() = runBlockingTest {
-
-        val loginResponse = Result.Success(
-            LoginResponse(
-                token = defaultToken
+    fun testSuccessfulLogin() =
+        runTest {
+            val loginResponse = Result.success(
+                LoginResponse(
+                    token = defaultToken,
+                ),
             )
-        )
 
-        loginRepository.mockLoginWithCredentials(
-            defaultCredentials,
-            loginResponse
-        )
+            loginRepository.mockLoginWithCredentials(
+                defaultCredentials,
+                loginResponse,
+            )
 
-        val useCase = ProdCredentialsLoginUseCase(
-            loginRepository = loginRepository.mock,
-            tokenRepository = tokenRepository.mock
-        )
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
 
-        val result = useCase(defaultCredentials)
-        assertThat(result).isEqualTo(LoginResult.Success)
-        tokenRepository.verifyTokenStored(defaultToken)
-    }
-
-    @Test
-    fun testUnknownFailureLogin() = runBlockingTest {
-        val loginResponse = Result.Error(
-            Throwable("Error Detected")
-        )
-
-        loginRepository.mockLoginWithCredentials(
-            defaultCredentials,
-            loginResponse
-        )
-
-        val useCase = ProdCredentialsLoginUseCase(
-            loginRepository = loginRepository.mock,
-            tokenRepository = tokenRepository.mock,
-        )
-
-        val result = useCase(defaultCredentials)
-        assertThat(result).isEqualTo(LoginResult.Failure.Unknown)
-        tokenRepository.verifyNoTokenStored()
-    }
+            val result = useCase.login(defaultCredentials)
+            assertThat(result).isEqualTo(LoginResult.Success)
+            tokenRepository.verifyTokenStored(defaultToken)
+        }
 
     @Test
-    fun testInvalidCredentialLogin() = runBlockingTest {
-        val loginResponse = Result.Error(
-            InvalidCredentialsException()
-        )
+    fun testUnknownFailureLogin() =
+        runBlocking {
+            val loginResponse: Result<LoginResponse> = Result.failure(
+                Throwable("Error Detected"),
+            )
 
-        loginRepository.mockLoginWithCredentials(
-            defaultCredentials,
-            loginResponse
-        )
+            loginRepository.mockLoginWithCredentials(
+                defaultCredentials,
+                loginResponse,
+            )
 
-        val useCase = ProdCredentialsLoginUseCase(
-            loginRepository = loginRepository.mock,
-            tokenRepository = tokenRepository.mock
-        )
-        val result = useCase(defaultCredentials)
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
 
-        assertThat(result).isEqualTo(LoginResult.Failure.InvalidCredentials)
-        tokenRepository.verifyNoTokenStored()
+            val result = useCase.login(defaultCredentials)
+            assertThat(result).isEqualTo(LoginResult.Failure.Unknown)
+            tokenRepository.verifyNoTokenStored()
+        }
+
+    @Test
+    fun testInvalidCredentialLogin() =
+        runBlocking {
+            val loginResponse: Result<LoginResponse> = Result.failure(
+                InvalidCredentialsException(),
+            )
+
+            loginRepository.mockLoginWithCredentials(
+                defaultCredentials,
+                loginResponse,
+            )
+
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
+            val result = useCase.login(defaultCredentials)
+
+            assertThat(result).isEqualTo(LoginResult.Failure.InvalidCredentials)
+            tokenRepository.verifyNoTokenStored()
+        }
+
+    @Test
+    fun testEmptyCredentialLogin() {
+        runTest {
+            val emptyCredentials = Credentials()
+
+            val useCase = ProdCredentialsLoginUseCase(
+                loginRepository = loginRepository.mock,
+                tokenRepository = tokenRepository.mock,
+            )
+
+            val result = useCase.login(emptyCredentials)
+            assertThat(result).isEqualTo(
+                LoginResult.Failure.EmptyCredentials(
+                    emptyEmail = true,
+                    emptyPassword = true,
+                ),
+            )
+
+            loginRepository.verifyNoLoginCall()
+            tokenRepository.verifyNoTokenStored()
+        }
     }
 }
