@@ -1,0 +1,2 @@
+appId: "com.sawrose.toa"
+initFlow: "login.yaml"

@@ -179,7 +179,7 @@ private fun RescheduleTaskDialog(
     if (taskToReschedule != null) {
         TOADatePickerDialog(
             datePickerState = rememberDatePickerState(
-                initialSelectedDateMillis = taskToReschedule.scheduleTimeInMillis.toLocalDateUTC()
+                initialSelectedDateMillis = taskToReschedule.scheduledDateMillis.toLocalDateUTC()
                     .toEpochMillisUTC(),
                 selectableDates = TOADatePickerDialog.FutureDates,
             ),
@@ -269,7 +269,7 @@ class TaskListViewStateProvider : PreviewParameterProvider<TaskListViewState> {
                 Task(
                     id = "INCOMPLETE_TASK_$index",
                     description = "Test task: $index",
-                    scheduleTimeInMillis = 0L,
+                    scheduledDateMillis = 0L,
                     completed = false,
                 )
             }
@@ -278,7 +278,7 @@ class TaskListViewStateProvider : PreviewParameterProvider<TaskListViewState> {
                 Task(
                     id = "COMPLETED_TASK_$index",
                     description = "Test task: $index",
-                    scheduleTimeInMillis = 0L,
+                    scheduledDateMillis = 0L,
                     completed = true,
                 )
             }

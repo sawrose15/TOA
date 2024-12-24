@@ -1,7 +1,5 @@
 package com.sawrose.toa.core.di
 
-import com.sawrose.toa.addTask.domain.usecases.AddTaskUseCase
-import com.sawrose.toa.addTask.domain.usecases.ProdAddTaskUseCase
 import com.sawrose.toa.tasklist.domain.usecase.GetAllTasksUseCase
 import com.sawrose.toa.tasklist.domain.usecase.GetTaskForDateUseCase
 import com.sawrose.toa.tasklist.domain.usecase.ProdGetAllTasksUseCase
@@ -31,11 +29,6 @@ abstract class UseCaseModule {
     abstract fun bindGetTaskForDateUsecase(
         getTaskForDateUseCase: ProdGetTaskForDateUseCase,
     ): GetTaskForDateUseCase
-
-    @Binds
-    abstract fun bindAddTaskUseCase(
-        addTaskUseCase: ProdAddTaskUseCase,
-    ): AddTaskUseCase
 
     @Binds
     abstract fun bindRescheduleTaskUseCase(

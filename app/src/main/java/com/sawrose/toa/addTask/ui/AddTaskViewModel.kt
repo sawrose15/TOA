@@ -6,10 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.sawrose.toa.R
 import com.sawrose.toa.addTask.domain.model.AddTaskResult
 import com.sawrose.toa.addTask.domain.model.TaskInput
-import com.sawrose.toa.addTask.domain.usecases.AddTaskUseCase
+import com.sawrose.toa.addTask.domain.usecases.addTask
+import com.sawrose.toa.core.repository.TaskRepository
 import com.sawrose.toa.core.ui.UIText
 import com.sawrose.toa.destinations.AddTaskScreenDestination
 import com.sawrose.toa.model.Task
+import com.sawrose.toa.preferences.UserPreferences
+import com.sawrose.toa.withAll
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,9 +24,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTaskViewModel @Inject constructor(
-    private val addTaskUseCase: AddTaskUseCase,
+    private val taskRepository: TaskRepository,
+    private val userPreferences: UserPreferences,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    /**
+     * Even though this screen can be navigated to using either AddTaskDialogDestination, or
+     * AddTaskScreenDestination, because they both have the same typesafe nav arguments delegate of
+     * [AddTaskNavArguments], it doesn't matter what we use here to call `argsFrom(savedStateHandle)
+     * because both will have the same functionality.
+     */
     private val args = AddTaskScreenDestination.argsFrom(savedStateHandle)
     private val _viewState: MutableStateFlow<AddTaskViewState> = MutableStateFlow(
         AddTaskViewState.Initial(
@@ -63,7 +73,7 @@ class AddTaskViewModel @Inject constructor(
         val newTask = Task(
             id = UUID.randomUUID().toString(),
             description = _viewState.value.taskInput.description,
-            scheduleTimeInMillis = _viewState.value.taskInput.scheduledDate
+            scheduledDateMillis = _viewState.value.taskInput.scheduledDate
                 .atStartOfDay()
                 .atZone(ZoneId.systemDefault())
                 .toInstant()
@@ -74,10 +84,12 @@ class AddTaskViewModel @Inject constructor(
         viewModelScope.launch {
             val canTry = (_viewState.value as? AddTaskViewState.SubmissionError)?.allowRetry
 
-            val result = addTaskUseCase.invoke(
-                task = newTask,
-                ignoreTaskLimits = canTry == true,
-            )
+            val result = withAll(taskRepository, userPreferences) {
+                addTask(
+                    task = newTask,
+                    ignoreTaskLimits = (canTry == true),
+                )
+            }
 
             _viewState.value = when (result) {
                 is AddTaskResult.Success -> {

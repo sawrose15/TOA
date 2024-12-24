@@ -1,0 +1,9 @@
+appId: com.sawrose.toa
+---
+- launchApp:
+    clearState: true
+- tapOn: "Email"
+- inputText: "adam@adam.com"
+- tapOn: "Password"
+- inputText: "Hunter2"
+- tapOn: "LOG IN"
