@@ -18,7 +18,7 @@ class ProdRescheduleTaskUseCase @Inject constructor(
         newDate: LocalDate,
     ) {
         val updatedTask = task.copy(
-            scheduleTimeInMillis = newDate.toEpochMillis(),
+            scheduledDateMillis = newDate.toEpochMillis(),
         )
 
         repository.updateTask(updatedTask)

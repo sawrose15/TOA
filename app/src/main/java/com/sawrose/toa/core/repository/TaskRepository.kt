@@ -17,8 +17,8 @@ interface TaskRepository {
     /**
      * Request for all the task that has been created for the supplied TimeInMillis.
      * */
-    fun fetchTaskForDate(
-        dateInMillis: Long,
+    fun fetchTasksForDate(
+        dateMillis: Long,
         completed: Boolean,
     ): Flow<TaskListResult>
 

@@ -54,4 +54,21 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
+
+    fun numTasksPerDayEnabledChanged(
+        enabled: Boolean,
+    ) {
+        // Update preferences
+        // And update state
+        // Ideally, we update preferences, and the state observes this change.
+        viewModelScope.launch {
+            userPreference.setPreferredNumTasksPerDayEnabled(enabled)
+
+            _viewState.update { currentState ->
+                currentState.copy(
+                    numTasksPreferenceEnabled = enabled,
+                )
+            }
+        }
+    }
 }

@@ -1,14 +1,99 @@
 package com.sawrose.toa.addTask.domain.usecases
 
 import com.sawrose.toa.addTask.domain.model.AddTaskResult
+import com.sawrose.toa.core.repository.TaskRepository
 import com.sawrose.toa.model.Task
+import com.sawrose.toa.preferences.UserPreferences
+import kotlinx.coroutines.flow.first
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 /**
- * Given a new task, store that in the user's task list.
+ * Function that runs within the context of a [TaskRepository] and [UserPreferences] to insert
+ * the supplied [task] into the repo. If [ignoreTaskLimits] is true, we won't respect the limits
+ * received from [UserPreferences].
  */
-interface AddTaskUseCase {
-    suspend operator fun invoke(
-        task: Task,
-        ignoreTaskLimits: Boolean,
-    ): AddTaskResult
+context(TaskRepository, UserPreferences)
+suspend fun addTask(
+    task: Task,
+    ignoreTaskLimits: Boolean,
+): AddTaskResult {
+    val sanitizedTask = task.copy(
+        description = task.description.trim(),
+    )
+
+    val validationResult = validateInput(sanitizedTask)
+
+    if (validationResult != null) {
+        return validationResult
+    }
+
+    if (!ignoreTaskLimits) {
+        val preferenceCheckResult = ensureNumTasksWithinPreferences(task)
+
+        if (preferenceCheckResult != null) {
+            return preferenceCheckResult
+        }
+    }
+
+    val result = addTask(sanitizedTask)
+
+    return result.fold(
+        onSuccess = {
+            AddTaskResult.Success
+        },
+        onFailure = {
+            AddTaskResult.Failure.Unknown
+        },
+    )
+}
+
+context(TaskRepository, UserPreferences)
+private suspend fun ensureNumTasksWithinPreferences(
+    task: Task,
+): AddTaskResult.Failure.MaxTasksPerDayExceeded? {
+    if (!getPreferredNumTasksPerDayEnabled()) {
+        return null
+    }
+
+    val preferredNumTasks = getPreferredNumTasksPerDay() ?: return null
+
+    val incompleteTaskList = fetchTasksForDate(
+        dateMillis = task.scheduledDateMillis,
+        completed = false,
+    ).first().getOrNull()
+
+    val numIncompleteTasks = incompleteTaskList?.size ?: 0
+
+    return if (numIncompleteTasks >= preferredNumTasks) {
+        AddTaskResult.Failure.MaxTasksPerDayExceeded
+    } else {
+        null
+    }
+}
+
+/**
+ * Since it's no longer possible to select a date in the past (our date picker validates this),
+ * we can simplify this to only validate that the description is not empty.
+ */
+private fun validateInput(
+    task: Task,
+): AddTaskResult.Failure.InvalidInput? {
+    val emptyDescription = task.description.isBlank()
+
+    val scheduledDate = Instant
+        .ofEpochMilli(task.scheduledDateMillis)
+        .atZone(ZoneId.systemDefault())
+        .toLocalDate()
+    val scheduledDateInPast = scheduledDate.isBefore(LocalDate.now())
+
+    return if (emptyDescription || scheduledDateInPast) {
+        AddTaskResult.Failure.InvalidInput(
+            emptyDescription = emptyDescription,
+            scheduledDateInPast = scheduledDateInPast,
+        )
+    } else {
+        null
+    }
 }

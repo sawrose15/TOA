@@ -35,7 +35,7 @@ fun TaskList(
     LazyColumn(
         contentPadding = PaddingValues(dimensionResource(id = R.dimen.list_padding)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.list_padding)),
-        modifier = modifier
+        modifier = modifier,
     ) {
         if (incompleteTasks.isEmpty()) {
             item {
@@ -157,7 +157,7 @@ private fun FullTaskListPreview() {
         Task(
             id = "$index",
             description = "Test task: $index",
-            scheduleTimeInMillis = 0L,
+            scheduledDateMillis = 0L,
             completed = false,
         )
     }
@@ -166,7 +166,7 @@ private fun FullTaskListPreview() {
         Task(
             id = "$index",
             description = "Test task: $index",
-            scheduleTimeInMillis = 0L,
+            scheduledDateMillis = 0L,
             completed = true,
         )
     }

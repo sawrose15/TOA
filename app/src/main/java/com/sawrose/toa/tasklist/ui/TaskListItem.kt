@@ -99,7 +99,7 @@ private class TaskPreviewParameterProvider : PreviewParameterProvider<Task> {
             val incompleteTask = Task(
                 id = "test",
                 description = "Clean my office space.",
-                scheduleTimeInMillis = 0L,
+                scheduledDateMillis = 0L,
                 completed = false,
             )
 

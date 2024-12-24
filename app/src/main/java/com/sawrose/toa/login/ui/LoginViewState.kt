@@ -17,7 +17,7 @@ sealed class LoginViewState(
     /**
      * Initial state of the login screen when nothing input.
      */
-    object Initial : LoginViewState(
+    data object Initial : LoginViewState(
         credentials = Credentials(),
     )
 
@@ -52,7 +52,7 @@ sealed class LoginViewState(
             credentials = credentials,
         )
 
-    object Completed : LoginViewState(
+    data object Completed : LoginViewState(
         credentials = Credentials(),
         inputEnabled = false,
     )

@@ -19,8 +19,8 @@ class ProdGetTaskForDateUseCase @Inject constructor(
             .toInstant()
             .toEpochMilli()
 
-        val incompleteTask = repository.fetchTaskForDate(dateInMillis, false)
-        val completedTask = repository.fetchTaskForDate(dateInMillis, true)
+        val incompleteTask = repository.fetchTasksForDate(dateInMillis, false)
+        val completedTask = repository.fetchTasksForDate(dateInMillis, true)
         return incompleteTask.combineTransform(completedTask) { incomplete, complete ->
             val completeTasks = complete.getOrNull()
             val incomplete = incomplete.getOrNull()

@@ -1,7 +1,7 @@
 package com.sawrose.toa.settings
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
@@ -11,6 +11,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun SettingsScreen(
     viewmodel: SettingsViewModel = hiltViewModel(),
 ) {
-    val viewstate = viewmodel.viewState.collectAsStateWithLifecycle()
-    Text("Hello Setting Page")
+    val viewstate by viewmodel.viewState.collectAsStateWithLifecycle()
+
+    SettingsContent(
+        viewState = viewstate,
+        onNumTasksChanged = viewmodel::numTasksPerDayChanged,
+        onNumTasksEnabledChanged = viewmodel::numTasksPerDayEnabledChanged,
+    )
 }

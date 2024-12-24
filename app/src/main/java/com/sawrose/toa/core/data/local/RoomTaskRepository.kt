@@ -21,11 +21,11 @@ class RoomTaskRepository @Inject constructor(
             }
     }
 
-    override fun fetchTaskForDate(
-        dateInMillis: Long,
+    override fun fetchTasksForDate(
+        dateMillis: Long,
         completed: Boolean,
     ): Flow<TaskListResult> {
-        val localDate = Instant.ofEpochMilli(dateInMillis)
+        val localDate = Instant.ofEpochMilli(dateMillis)
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
 
@@ -75,7 +75,7 @@ private fun PersistableTask.toTask(): Task {
     return Task(
         id = this.id,
         description = this.description,
-        scheduleTimeInMillis = LocalDate.parse(this.scheduledDate, persistedDateFormatter)
+        scheduledDateMillis = LocalDate.parse(this.scheduledDate, persistedDateFormatter)
             .atStartOfDay()
             .atZone(ZoneId.systemDefault())
             .toInstant()
@@ -85,7 +85,7 @@ private fun PersistableTask.toTask(): Task {
 }
 
 private fun Task.toTaskEntity(): PersistableTask {
-    val scheduledDate = Instant.ofEpochMilli(this.scheduleTimeInMillis)
+    val scheduledDate = Instant.ofEpochMilli(this.scheduledDateMillis)
         .atZone(ZoneId.systemDefault())
         .toLocalDate()
 
